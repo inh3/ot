@@ -9,7 +9,7 @@ BEGIN
     
     SELECT id INTO foundId
     FROM Users
-    WHERE (user_name = userName);
+    WHERE user_name LIKE userName;
     
     IF foundId IS NOT NULL THEN
         DELETE FROM Users WHERE id = foundId;

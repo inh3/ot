@@ -11,7 +11,7 @@ CREATE PROCEDURE InsertUser(
     IN numFollowers INT)
 BEGIN
     DECLARE userId INT DEFAULT NULL;
-    SELECT id INTO userId FROM Users WHERE user_name = userName;
+    SELECT id INTO userId FROM Users WHERE user_name LIKE userName;
     
     IF userId IS NULL THEN
         INSERT INTO Users ( user_name, password, email, sound_byte, num_tweets, num_follows, num_followers, join_date )

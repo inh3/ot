@@ -13,7 +13,7 @@ BEGIN
     WHERE (user_name = userName) AND (password = SHA2(userPass, 256));
     
     IF foundId IS NOT NULL THEN
-        SELECT user_name, email, sound_byte, num_tweets, num_follows, num_followers FROM Users WHERE user_name = userName;
+        SELECT id, user_name, email, sound_byte, num_tweets, num_follows, num_followers FROM Users WHERE id = foundId;
     END IF;
 
 END$$
