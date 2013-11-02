@@ -1,6 +1,4 @@
-Use ot;
-
-CREATE TABLE `Users` (
+CREATE TABLE IF NOT EXISTS `Users` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
     `user_name` VARCHAR(20) NOT NULL,
 	`password` VARCHAR(64) NOT NULL,
@@ -10,5 +8,5 @@ CREATE TABLE `Users` (
 	`num_follows` INT NOT NULL,
 	`num_followers` INT NOT NULL,
 	`join_date` DATETIME NOT NULL,
-	PRIMARY KEY (`Id`)
+	PRIMARY KEY (`id`)
 )
