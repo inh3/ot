@@ -7,7 +7,7 @@ BEGIN
     DECLARE followerCount INT DEFAULT NULL;
     
     -- contains the list of foller ids
-    CREATE TEMPORARY TABLE IF NOT EXISTS FollowerIdTable (user_id INT); 
+    CREATE TEMPORARY TABLE IF NOT EXISTS FollowerIdTable (user_id INT);
     
     -- table of each followers data
     CREATE TEMPORARY TABLE IF NOT EXISTS FollowersTable (
@@ -34,7 +34,7 @@ BEGIN
         
         -- insert the follower user information into return table
         INSERT INTO FollowersTable 
-        SELECT id AS user_id, user_name, email, sound_byte, num_tweets, num_follows, num_followers
+        SELECT id, user_name, email, sound_byte, num_tweets, num_follows, num_followers
         FROM Users WHERE id = @followerId;
         
         -- delete the follower from the temporary table
@@ -44,6 +44,7 @@ BEGIN
         SET followerCount := followerCount - ROW_COUNT();
     END WHILE;
     
+    -- return result set of followers
     SELECT * FROM FollowersTable;
     
     -- drop temporary tables
