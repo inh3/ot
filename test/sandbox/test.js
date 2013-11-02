@@ -3,9 +3,10 @@ var Client = require('mariasql');
 
 var c = new Client();
 c.connect({
-    host: '127.0.0.1',
-    user: 'root'
-    //password: 'open.care!'
+    host: '192.168.1.122',
+    user: 'ot',
+    password: 'open.care!',
+    db: 'ot'
 });
 
 c.on('connect', function() {
