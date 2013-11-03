@@ -1,6 +1,5 @@
 /* Mobile */
 @media only screen and (max-width: 767px) {
-    header h2 { font-size: 34px; line-height: 37px; }
     nav { position: relative; }
     nav ul { display: none; }
     #logo { text-align: left; }

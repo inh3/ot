@@ -1,6 +1,11 @@
 nav {
     position: fixed;
     width: 160px;
+
+    border-style: solid;
+    border-color: #bbbbbb;
+    border-width: 2px;
+    padding: 5px;
 }
 
 #logo {
@@ -12,6 +17,7 @@ nav {
 
 nav ul {
     float: left;
+    margin-bottom: 0;
 }
 
 nav ul li {
