@@ -5,6 +5,7 @@
     "description": "ot",
 
     "scripts": {
+        "preinstall": "npm install -g grunt-cli"
     },
 
     "dependencies": {
@@ -13,10 +14,12 @@
         "express": ">= 3.4.4"
     },
 
-    "engines": {
-        "node": ">= 0.10.0"
+    "devDependencies": {
+        "grunt": ">=0.4.0",
+        "grunt-contrib-handlebars": ">=0.5.8"
     },
 
-    "devDependencies": {
+    "engines": {
+        "node": ">= 0.10.0"
     }
 }
