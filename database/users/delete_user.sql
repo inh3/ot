@@ -2,19 +2,9 @@ DELIMITER $$
 DROP PROCEDURE DeleteUser$$
 
 CREATE PROCEDURE DeleteUser(
-    IN userName VARCHAR(20))
+    IN userId INT)
 BEGIN
-    DECLARE foundId INT DEFAULT NULL;
-    DECLARE foundName VARCHAR(20) DEFAULT NULL;
-    
-    SELECT id INTO foundId
-    FROM Users
-    WHERE user_name LIKE userName;
-    
-    IF foundId IS NOT NULL THEN
-        DELETE FROM Users WHERE id = foundId;
-    END IF;
-    
-    SELECT id FROM Users Where id = foundId;
+    DELETE FROM Users WHERE id = userId;
+    SELECT id FROM Users Where id = userId;
 END$$
 DELIMITER ;
