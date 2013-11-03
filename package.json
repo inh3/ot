@@ -4,9 +4,13 @@
 
     "description": "ot",
 
+    "scripts": {
+    },
+
     "dependencies": {
         "mariasql": ">= 0.1.19",
-        "underscore": ">= 1.5.1"
+        "underscore": ">= 1.5.1",
+        "express": ">= 3.4.4"
     },
 
     "engines": {
