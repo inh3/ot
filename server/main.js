@@ -1,6 +1,6 @@
 // native
 var fs = require('fs');
-var indexHtml = fs.readFileSync(__dirname + '/../client/web/html/index.html', {
+var indexHtml = fs.readFileSync(__dirname + '/../client/web/static/html/index.html', {
     encoding: 'utf8'
 });
 //console.log(indexHtml);
