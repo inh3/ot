@@ -178,7 +178,7 @@ function FollowRepository() {
         // end of response
         dbQuery.on('end', function() {
             //console.log('[ follow repo ] response end: ');
-            self.emit('follow-repo:response-end:add-follow', queryKey, deletedFollow);
+            self.emit('follow-repo:response-end:remove-follow', queryKey, deletedFollow);
         });
 
         // return query key to the caller
