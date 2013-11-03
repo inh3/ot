@@ -1,48 +1,29 @@
 // native node modules
-var Inspect = require('util').inspect;
+var Util = require('util');
+var Inspect = Util.inspect;
 
-// maria db client library
-var MariaClient = require('mariasql');
-var mariaClient = new MariaClient();
+// base music service
+var BaseRepository = require(__dirname + '/baseRepository.js');
 
 function UserRepository() {
 
-    var getUser = mariaClient.prepare('CALL GetUser(:id)');
+    // inherit from the base repository
+    BaseRepository.call(this);
 
-    this.isConnected = function() {
-        return mariaClient.connected;
-    };
+    // prepared sql statements
+    var getUser = this.maraClient.prepare('CALL GetUser(:id)');
 
-    this.dbConnect = function() {
-        mariaClient.connect({
-            host: '192.168.1.122',
-            user: 'ot',
-            password: 'open.care!',
-            db: 'ot'
-        });
-        mariaClient.on('connect', function() {
-            console.log('Client Connected');
-        });
-        mariaClient.on('error', function(connectionError) {
-            console.log('Client Error: ' + connectionError);
-        });
-        mariaClient.on('close', function(connectionHadError) {
-            console.log('Client Closed: ' + connectionHadError);
-        });
-    };
-
-    this.dbDisconnect = function() {
-        mariaClient.end();
-    };
-
+    // retrieve a user's information via id
     this.getUser = function(userId, queryCallback, callbackContext) {
         // user to return
         var userResult = null;
 
         // perform the query
-        var dbQuery = mariaClient.query(getUser({
+        var dbQuery = this.maraClient.query(getUser({
                 id: userId
         }));
+
+        // response to query
         dbQuery.on('result', function(dbResponse) {
             dbResponse.on('row', function(responseRow) {
                 //console.log('Result row: ' + Inspect(responseRow));
@@ -55,6 +36,7 @@ function UserRepository() {
                 //console.log('Result finished: ' + Inspect(responseInfo));
             });
         });
+        // end of response
         dbQuery.on('end', function() {
             console.log('Done with all results');
             queryCallback.bind(callbackContext ? callbackContext : this)(userResult);
@@ -62,4 +44,8 @@ function UserRepository() {
     };
 }
 
+// inherit from the base music service
+Util.inherits(UserRepository, BaseRepository);
+
+// export the module as a constructor function
 module.exports = UserRepository;

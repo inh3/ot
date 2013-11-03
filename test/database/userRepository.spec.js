@@ -1,14 +1,17 @@
+// third-party modules
 var _ = require('underscore');
 
+// custom modules
 var UserRepository = require(__dirname + './../../server/dal/userRepository.js');
+
+// user repository instance
 var userRepository = new UserRepository();
 
+// connect to repository
 userRepository.dbConnect();
 
-console.log('User Repo Connected: ' + userRepository.isConnected());
-
+// get user
 userRepository.getUser(1, function(userResult) {
     console.log(userResult);
-}, this);
-
+}, null);
 userRepository.dbDisconnect();
