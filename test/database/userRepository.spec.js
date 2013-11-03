@@ -10,8 +10,13 @@ var userRepository = new UserRepository();
 // connect to repository
 userRepository.dbConnect();
 
+// listen for events
+userRepository.on('user-repo:response-end', function(repoResult) {
+    console.log(repoResult);
+});
+
 // get user
-userRepository.getUser(1, function(userResult) {
-    console.log(userResult);
-}, null);
+userRepository.getUser(1);
+
+// disconnect
 userRepository.dbDisconnect();

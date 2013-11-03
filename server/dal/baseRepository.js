@@ -30,15 +30,15 @@ function BaseRepository() {
         });
         this.maraClient.on('connect', function() {
             console.log('[ mariasql.connect ] connect');
-            self.emit('user-repo:connected');
+            self.emit('base-repo:connected');
         });
         this.maraClient.on('error', function(connectionError) {
             console.log('[ mariasql.connect ] error: ' + connectionError);
-            self.emit('user-repo:error', connectionError);
+            self.emit('base-repo:error', connectionError);
         });
         this.maraClient.on('close', function(connectionHadError) {
             console.log('[ mariasql.connect ] close: ' + connectionHadError);
-            self.emit('user-repo:close', connectionHadError);
+            self.emit('base-repo:close', connectionHadError);
         });
     };
 

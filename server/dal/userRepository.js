@@ -10,11 +10,14 @@ function UserRepository() {
     // inherit from the base repository
     BaseRepository.call(this);
 
+    // reference to self
+    var self = this;
+
     // prepared sql statements
     var getUser = this.maraClient.prepare('CALL GetUser(:id)');
 
     // retrieve a user's information via id
-    this.getUser = function(userId, queryCallback, callbackContext) {
+    this.getUser = function(userId) {
         // user to return
         var userResult = null;
 
@@ -30,16 +33,18 @@ function UserRepository() {
                 userResult = responseRow;
             });
             dbResponse.on('error', function(responseError) {
-                console.log('Result error: ' + Inspect(responseError));
+                console.log('[ user repo ] error: ' + Inspect(responseError));
+                self.emit('user-repo:result-error', responseError);
             });
             dbResponse.on('end', function(responseInfo) {
                 //console.log('Result finished: ' + Inspect(responseInfo));
+                self.emit('user-repo:result-end', responseInfo);
             });
         });
         // end of response
         dbQuery.on('end', function() {
             console.log('Done with all results');
-            queryCallback.bind(callbackContext ? callbackContext : this)(userResult);
+            self.emit('user-repo:response-end', userResult);
         });
     };
 }
