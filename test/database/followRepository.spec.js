@@ -39,6 +39,13 @@ followRepository.addFollow(2, 5);
 // get the who a user is following by user id
 followRepository.getFollowersByUserId(5);
 
+// add follows
+followRepository.removeFollow(1, 5);
+followRepository.removeFollow(2, 5);
+
+// get the who a user is following by user id
+followRepository.getFollowersByUserId(5);
+
 // failures
 followRepository.getFollowingByUserId(9999);
 followRepository.getFollowersByUserId(9999);
