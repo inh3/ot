@@ -1,6 +1,12 @@
+// native
+var fs = require('fs');
+var indexHtml = fs.readFileSync(__dirname + '/../client/web/html/index.html', {
+    encoding: 'utf8'
+});
+console.log(indexHtml);
+
 var express = require('express');
 var app = express();
-
 
 // add favicon() before logger() so
 // GET /favicon.ico requests are not
@@ -23,26 +29,33 @@ app.use(express.cookieParser());
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.get('/', function(req, res){
+app.get('/save', function(req, res){
     if (req.cookies.remember) {
         res.send('Remembered :). Click to <a href="/forget">forget</a>!.');
     } else {
-        res.send('<form method="post"><p>Check to <label>'
-            + '<input type="checkbox" name="remember"/> remember me</label> '
-            + '<input type="submit" value="Submit"/>.</p></form>');
+        res.redirect('/');
     }
 });
 
 app.get('/forget', function(req, res){
     res.clearCookie('remember');
-    res.redirect('back');
+    res.redirect('/');
 });
+
+app.get('/', function(req, res){
+    if (req.cookies.remember) {
+        res.redirect('save');
+    } else {
+        res.send(indexHtml);
+    }
+});
+
 
 app.post('/', function(req, res){
     console.log(req.body);
     var minute = 60000;
     if (req.body.remember) res.cookie('remember', 1, { maxAge: minute });
-    res.redirect('back');
+    res.redirect('save');
 });
 
 if (!module.parent){
