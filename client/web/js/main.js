@@ -4,7 +4,7 @@ require.config({
     baseUrl:                "./js",
 
     // cache-busting for development environment
-    urlArgs:                "bust=" + (new Date()).getTime(),
+    //urlArgs:                "bust=" + (new Date()).getTime(),
 
     // global dependencies
     deps:                   [ "jquery" ],
