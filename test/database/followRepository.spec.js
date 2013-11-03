@@ -12,8 +12,18 @@ followRepository.on('follow-repo:response-end:get-following-by-user-id', functio
     console.log(followedUsers);
 });
 
-// get user
+// get users following a user by id
 followRepository.getFollowingByUserId(5);
+
+// get the who a user is following by user id
+followRepository.getFollowersByUserId(1);
+
+// get the who a user is following by user id
+followRepository.getFollowersByUserId(2);
+
+// failures
+followRepository.getFollowingByUserId(9999);
+followRepository.getFollowersByUserId(9999);
 
 // disconnect
 followRepository.dbDisconnect();

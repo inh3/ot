@@ -51,11 +51,9 @@ userRepository.getUser(1);
 
 // get user for login
 userRepository.getUserLogin('rita', 'test');
-userRepository.getUserLogin('ritax', 'test');
 
 // get user
 userRepository.getUser(5);
-userRepository.getUser(12345);
 
 // insert user
 userRepository.addUser({
@@ -65,6 +63,12 @@ userRepository.addUser({
     soundByte: 'user repo sound byte'
 });
 
+// delete user should be graceful
+userRepository.removeUser(1234);
+
+// failures
+userRepository.getUser(12345);
+userRepository.getUserLogin('ritax', 'test');
 
 // disconnect
 userRepository.dbDisconnect();
