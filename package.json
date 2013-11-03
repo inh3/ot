@@ -1,0 +1,18 @@
+{
+    "name": "ot",
+    "version": "0.0.1",
+
+    "description": "ot",
+
+    "dependencies": {
+        "mariasql": ">= 0.1.19",
+        "underscore": ">= 1.5.1"
+    },
+
+    "engines": {
+        "node": ">= 0.10.0"
+    },
+
+    "devDependencies": {
+    }
+}
