@@ -1,6 +1,7 @@
 /* import other css files */
 @import url("nav.css");
 @import url("content.css");
+@import url("title-bar.css");
 @import url("media-query.css");
 
 div.container {

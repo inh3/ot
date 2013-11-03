@@ -1,0 +1,14 @@
+#title-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 50px;
+    margin-bottom: 10px;
+    display: block;
+    background-color: #cccccc;
+    z-index: 1030;
+
+    /* render separately, prevents from flashing in chrome */
+    -webkit-transform: translateZ(0);
+}
