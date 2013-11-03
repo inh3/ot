@@ -3,35 +3,17 @@ var _ = require('underscore');
 var FollowRepository = require(__dirname + './../../server/dal/followRepository.js');
 var followRepository = new FollowRepository();
 
+// connect to repository
 followRepository.dbConnect();
 
-console.log('User Repo Connected: ' + followRepository.isConnected());
+// listen for events
+followRepository.on('follow-repo:response-end:get-following-by-user-id', function(queryKey, followedUsers) {
+    console.log('queryId: ' + queryKey);
+    console.log(followedUsers);
+});
 
-followRepository.getFollowingByUserId(5, function(followedUsers) {
-    _.forEach(followedUsers, function(user) {
-        console.log(user);
-    });
-    if(!followedUsers) {
-        console.log("No Followed Users!");
-    }
-}, this);
+// get user
+followRepository.getFollowingByUserId(5);
 
-followRepository.getFollowingByUserId(1, function(followedUsers) {
-    _.forEach(followedUsers, function(user) {
-        console.log(user);
-    });
-    if(!followedUsers) {
-        console.log("No Followed Users!");
-    }
-}, this);
-
-followRepository.getFollowingByUserId(99, function(followedUsers) {
-    _.forEach(followedUsers, function(user) {
-        console.log(user);
-    });
-    if(!followedUsers) {
-        console.log("No Followed Users!");
-    }
-}, this);
-
+// disconnect
 followRepository.dbDisconnect();

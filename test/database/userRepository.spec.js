@@ -11,12 +11,22 @@ var userRepository = new UserRepository();
 userRepository.dbConnect();
 
 // listen for events
-userRepository.on('user-repo:response-end', function(repoResult) {
+userRepository.on('user-repo:response-end:get-user', function(queryKey, repoResult) {
+    console.log('queryId: ' + queryKey);
+    console.log(repoResult);
+});
+
+// listen for events
+userRepository.on('user-repo:response-end:get-user-login', function(queryKey, repoResult) {
+    console.log('queryId: ' + queryKey);
     console.log(repoResult);
 });
 
 // get user
 userRepository.getUser(1);
+userRepository.getUserLogin('rita', 'test');
+// get user
+userRepository.getUser(5);
 
 // disconnect
 userRepository.dbDisconnect();

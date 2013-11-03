@@ -1,70 +1,62 @@
 // native node modules
-var Inspect = require('util').inspect;
+var Util = require('util');
+var Inspect = Util.inspect;
 
-// maria db client library
-var MariaClient = require('mariasql');
-var mariaClient = new MariaClient();
+// base music service
+var BaseRepository = require(__dirname + '/baseRepository.js');
 
 function FollowRepository() {
 
-    var getFollowingByUserId = mariaClient.prepare('CALL GetFollowingByUserId(:id)');
+    // inherit from the base repository
+    BaseRepository.call(this);
 
-    this.isConnected = function() {
-        return mariaClient.connected;
-    };
+    // reference to self
+    var self = this;
 
-    this.dbConnect = function() {
-        mariaClient.connect({
-            host: '192.168.1.122',
-            user: 'ot',
-            password: 'open.care!',
-            db: 'ot'
-        });
-        mariaClient.on('connect', function() {
-            console.log('Client Connected');
-        });
-        mariaClient.on('error', function(connectionError) {
-            console.log('Client Error: ' + connectionError);
-        });
-        mariaClient.on('close', function(connectionHadError) {
-            console.log('Client Closed: ' + connectionHadError);
-        });
-    };
+    // prepared sql statements
+    var getFollowingByUserId = this.mariaClient.prepare('CALL GetFollowingByUserId(:id)');
 
-    this.dbDisconnect = function() {
-        mariaClient.end();
-    };
+    // retrieve a user's information via id
+    this.getFollowingByUserId = function(userId) {
+        // increment and return query key
+        var queryKey = this.generateQueryKey();
 
-    this.getFollowingByUserId= function(userId, queryCallback, callbackContext) {
         // followed users to return
         var followedUsers = [];
 
         // perform the query
-        var dbQuery = mariaClient.query(getFollowingByUserId({
+        var dbQuery = this.mariaClient.query(getFollowingByUserId({
             id: userId
         }));
+
+        // response to query
         dbQuery.on('result', function(dbResponse) {
             dbResponse.on('row', function(responseRow) {
                 //console.log('Result row: ' + Inspect(responseRow));
                 followedUsers.push(responseRow);
             });
             dbResponse.on('error', function(responseError) {
-                console.log('Result error: ' + Inspect(responseError));
+                console.log('[ follow repo ] error: ' + Inspect(responseError));
+                self.emit('follow-repo:result-error', responseError);
             });
             dbResponse.on('end', function(responseInfo) {
                 //console.log('Result finished: ' + Inspect(responseInfo));
+                self.emit('follow-repo:result-end', responseInfo);
             });
         });
+        // end of response
         dbQuery.on('end', function() {
-            console.log('Done with all results');
-
-            // return null if zero results
-            if(followedUsers.length > 0)
-                queryCallback.bind(callbackContext ? callbackContext : this)(followedUsers);
-            else
-                queryCallback.bind(callbackContext ? callbackContext : this)(null);
+            //console.log('[ follow repo ] response end: ');
+            self.emit('follow-repo:response-end:get-following-by-user-id', queryKey, followedUsers);
         });
+
+        // return query key to the caller
+        return queryKey;
     };
 }
 
+// inherit from the base music service
+Util.inherits(FollowRepository, BaseRepository);
+
+// export the module as a constructor function
 module.exports = FollowRepository;
