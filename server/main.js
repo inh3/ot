@@ -3,10 +3,13 @@ var fs = require('fs');
 var indexHtml = fs.readFileSync(__dirname + '/../client/web/html/index.html', {
     encoding: 'utf8'
 });
-console.log(indexHtml);
+//console.log(indexHtml);
 
 var express = require('express');
 var app = express();
+
+// third-party external libraries
+app.use('/lib', express.static(__dirname + '/../client/web/static/lib'));
 
 // add favicon() before logger() so
 // GET /favicon.ico requests are not
