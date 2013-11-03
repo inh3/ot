@@ -7,7 +7,7 @@ require.config({
     //urlArgs:                "bust=" + (new Date()).getTime(),
 
     // global dependencies
-    deps:                   [ "jquery" ],
+    deps:                   [ "cookie", "jquery" ],
 
     // paths to modules and libraries
     // .js is included automatically
@@ -40,6 +40,9 @@ require.config({
         compositeViews:     "views/composite",
         itemViews:          "views/item",
 
+        // cookie
+        cookie:             "./../lib/cookie-js/cookie-js-0.3.0/cookie",
+
         // backbone
         backbone:           "./../lib/backbone/backbone-1.0.0/backbone.min",
         underscore:         "./../lib/underscore/underscore-1.5.2/underscore-min",
@@ -62,6 +65,9 @@ require.config({
     },
     // support for non-amd libraries
     shim: {
+        cookie: {
+            exports:        'Cookie'
+        },
         json2: {
             exports:        'JSON'
         },
@@ -86,7 +92,8 @@ require.config({
 require([   "jquery",
             "opentweet",
             "marionette",
-            "handlebars"],
+            "handlebars",
+            "cookie"],
 function(   $,
             OpenTweet) {
 
