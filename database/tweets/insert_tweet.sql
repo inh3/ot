@@ -3,12 +3,19 @@ DROP PROCEDURE InsertTweet$$
 
 CREATE PROCEDURE InsertTweet(
     IN userId INT,
-    IN userName VARCHAR(20),
     IN tweetMessage VARCHAR(140))
 BEGIN
-    INSERT INTO Tweets ( user_id, user_name, message, timestamp )
-    VALUES ( userId, userName, tweetMessage, NOW() );
+    DECLARE tweetUserId INT DEFAULT NULL;
+    DECLARE tweetUserName VARCHAR(20) DEFAULT NULL;
     
-    SELECT user_id, user_name, message, timestamp FROM Tweets WHERE id = LAST_INSERT_ID();
+    SELECT id, user_name INTO tweetUserId, tweetUserName 
+    FROM Users WHERE id = userId;
+
+    IF tweetUserId IS NOT NULL THEN
+        INSERT INTO Tweets ( user_id, user_name, message, timestamp )
+        VALUES ( tweetUserId, tweetUserName, tweetMessage, NOW() );
+
+        SELECT id, user_id, user_name, message, timestamp FROM Tweets WHERE id = LAST_INSERT_ID();
+    END IF;
 END$$
 DELIMITER ;

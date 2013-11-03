@@ -12,6 +12,17 @@ followRepository.on('follow-repo:response-end:get-following-by-user-id', functio
     console.log(followedUsers);
 });
 
+followRepository.on('follow-repo:response-end:get-followers-by-user-id', function(queryKey, followerUsers) {
+    console.log('queryId: ' + queryKey);
+    console.log(followerUsers);
+});
+
+followRepository.on('follow-repo:response-end:add-follow', function(queryKey, addedFollow) {
+    console.log('queryId: ' + queryKey);
+    console.log(addedFollow);
+});
+
+
 // get users following a user by id
 followRepository.getFollowingByUserId(5);
 
@@ -20,6 +31,13 @@ followRepository.getFollowersByUserId(1);
 
 // get the who a user is following by user id
 followRepository.getFollowersByUserId(2);
+
+// add follows
+followRepository.addFollow(1, 5);
+followRepository.addFollow(2, 5);
+
+// get the who a user is following by user id
+followRepository.getFollowersByUserId(5);
 
 // failures
 followRepository.getFollowingByUserId(9999);
