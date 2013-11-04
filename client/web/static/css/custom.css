@@ -4,6 +4,10 @@
 @import url("title-bar.css");
 @import url("media-query.css");
 
+.hidden {
+    display: none !important;
+}
+
 div.container {
     padding-top: 60px;
 }

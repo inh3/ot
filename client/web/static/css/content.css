@@ -9,6 +9,13 @@ div.content-section {
     padding: 5px;
 }
 
+#content.sign-up {
+    margin: auto;
+    position: relative;
+    float: none;
+    display: block;
+}
+
 #content-title {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     letter-spacing: -1px;

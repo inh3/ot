@@ -8,6 +8,7 @@ function(   EventAggregator) {
 
         defaultRoute: function() {
             console.log("applicationRouter - defaultRoute");
+            EventAggregator.trigger("router:default-route");
         }
     });
 });
