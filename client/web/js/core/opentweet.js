@@ -32,9 +32,17 @@ function(   TitleBarLayout,
         OpenTweet.appRouter = new ApplicationRouter();
 
         // update regions and layouts
-        OpenTweet.titleBarRegion.show(new TitleBarLayout());
-        OpenTweet.sideBarNavRegion.show(new SideBarNavLayout());
-        OpenTweet.contentRegion.show(new ContentLayout());
+        var titleBarLayout = new TitleBarLayout();
+        OpenTweet.titleBarRegion.attachView(titleBarLayout);
+        OpenTweet.titleBarRegion.show(titleBarLayout);
+
+        var sideBarNavLayout = new SideBarNavLayout();
+        OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
+        OpenTweet.sideBarNavRegion.show(sideBarNavLayout);
+
+        var contentLayout = new ContentLayout();
+        OpenTweet.contentRegion.attachView(contentLayout);
+        OpenTweet.contentRegion.show(contentLayout);
     });
 
     OpenTweet.on("initialize:before", function(options) {

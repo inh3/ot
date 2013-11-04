@@ -9,7 +9,7 @@ function(   EventAggregator,
 
     return Backbone.Marionette.Layout.extend({
 
-        tagName: 'div',
+        el: '#title-bar',
 
         template: Handlebars.templates["title-bar-layout.hbs"],
 

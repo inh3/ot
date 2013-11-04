@@ -9,7 +9,7 @@ function(   EventAggregator,
 
     return Backbone.Marionette.Layout.extend({
 
-        tagName: 'div',
+        el: '#side-bar-nav',
 
         template: Handlebars.templates["sidebar-nav-layout.hbs"],
 
