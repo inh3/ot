@@ -1,9 +1,13 @@
 define([    "layouts/titleBarLayout",
+            "layouts/sideBarNavLayout",
+            "layouts/contentLayout",
             "routers/applicationRouter",
             "backbone",
             "vent",
             "marionette"],
 function(   TitleBarLayout,
+            SideBarNavLayout,
+            ContentLayout,
             ApplicationRouter,
             Backbone,
             EventAggregator) {
@@ -15,7 +19,9 @@ function(   TitleBarLayout,
 
     // add regions to application
     OpenTweet.addRegions({
-        titleBarRegion: "#title-bar"
+        titleBarRegion: "#title-bar",
+        sideBarNavRegion: "#side-bar-nav",
+        contentRegion: "#content"
     });
 
     // configuration, setting up regions, etc ...
@@ -25,9 +31,10 @@ function(   TitleBarLayout,
         // attach main router and controller to application
         OpenTweet.appRouter = new ApplicationRouter();
 
-        // add and show the main region of the application
-        OpenTweet.titleBarRegion.layout = new TitleBarLayout();
-        OpenTweet.titleBarRegion.show(OpenTweet.titleBarRegion.layout);
+        // update regions and layouts
+        OpenTweet.titleBarRegion.show(new TitleBarLayout());
+        OpenTweet.sideBarNavRegion.show(new SideBarNavLayout());
+        OpenTweet.contentRegion.show(new ContentLayout());
     });
 
     OpenTweet.on("initialize:before", function(options) {

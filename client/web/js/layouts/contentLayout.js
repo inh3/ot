@@ -1,6 +1,6 @@
 define([    "vent",
             "handlebars",
-            "templates/title-bar-layout",
+            "templates/content-layout",
             "marionette"],
 function(   EventAggregator,
             Handlebars) {
@@ -11,14 +11,14 @@ function(   EventAggregator,
 
         tagName: 'div',
 
-        template: Handlebars.templates["title-bar-layout.hbs"],
+        template: Handlebars.templates["content-layout.hbs"],
 
         initialize: function() {
-            console.log("titleBarLayout - initialize")
+            console.log("contentLayout - initialize")
         },
 
         onShow: function() {
-            console.log("titleBarLayout - onShow");
+            console.log("contentLayout - onShow");
         }
     });
 });
