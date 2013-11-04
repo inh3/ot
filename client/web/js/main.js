@@ -58,7 +58,7 @@ require.config({
         handlebars:         "./../lib/handlebars/handlebars-1.0.0/handlebars.runtime",
 
         // templates
-        templates:          "templates",
+        templates:          "./../templates",
 
         // handlebars helpers
         helpers:            "templates/helpers"

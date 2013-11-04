@@ -1,7 +1,11 @@
-define([    "backbone",
+define([    "layouts/titleBarLayout",
+            "routers/applicationRouter",
+            "backbone",
             "vent",
             "marionette"],
-function(   Backbone,
+function(   TitleBarLayout,
+            ApplicationRouter,
+            Backbone,
             EventAggregator) {
 
     "use strict";
@@ -9,9 +13,21 @@ function(   Backbone,
     // set up the app instance
     var OpenTweet = new Backbone.Marionette.Application();
 
+    // add regions to application
+    OpenTweet.addRegions({
+        titleBarRegion: "#title-bar"
+    });
+
     // configuration, setting up regions, etc ...
     OpenTweet.addInitializer(function(options) {
         console.log("OpenTweet - addInitializer");
+
+        // attach main router and controller to application
+        OpenTweet.appRouter = new ApplicationRouter();
+
+        // add and show the main region of the application
+        OpenTweet.titleBarRegion.layout = new TitleBarLayout();
+        OpenTweet.titleBarRegion.show(OpenTweet.titleBarRegion.layout);
     });
 
     OpenTweet.on("initialize:before", function(options) {

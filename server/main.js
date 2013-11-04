@@ -11,6 +11,7 @@ var app = express();
 // third-party external libraries
 app.use('/lib', express.static(__dirname + '/../client/web/static/lib'));
 app.use('/css', express.static(__dirname + '/../client/web/static/css'));
+app.use('/templates', express.static(__dirname + '/../client/web/static/templates'));
 app.use('/js', express.static(__dirname + '/../client/web/js'));
 
 // add favicon() before logger() so

@@ -17,6 +17,9 @@ module.exports = function(grunt) {
                     amd: true
                 },
                 files: {
+
+                    // title bar
+                    "client/web/static/templates/title-bar-layout.js":          "client/web/js/templates/title-bar-layout.hbs"
                 }
             }
         }
