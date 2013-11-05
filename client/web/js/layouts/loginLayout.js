@@ -1,5 +1,6 @@
 define([    "models/loginModel",
             "models/signUpModel",
+            "models/userModel",
             "vent",
             "underscore",
             "handlebars",
@@ -7,6 +8,7 @@ define([    "models/loginModel",
             "marionette"],
 function(   LoginModel,
             SignUpModel,
+            UserModel,
             EventAggregator,
             _,
             Handlebars) {
@@ -64,6 +66,8 @@ function(   LoginModel,
         },
         loginButtonClick: function() {
             console.log("loginLayout - loginButtonClick");
+
+            UserModel.userLogin(this.loginModel.toJSON());
         },
 
         signUpKeyPress: function() {
