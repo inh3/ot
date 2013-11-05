@@ -1,6 +1,7 @@
 define([    "layouts/titleBarLayout",
             "layouts/sideBarNavLayout",
             "layouts/contentLayout",
+            "layouts/loginLayout",
             "routers/applicationRouter",
             "backbone",
             "vent",
@@ -8,6 +9,7 @@ define([    "layouts/titleBarLayout",
 function(   TitleBarLayout,
             SideBarNavLayout,
             ContentLayout,
+            LoginLayout,
             ApplicationRouter,
             Backbone,
             EventAggregator) {
@@ -65,7 +67,7 @@ function(   TitleBarLayout,
         OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
         OpenTweet.sideBarNavRegion.show(sideBarNavLayout);
 
-        var contentLayout = new ContentLayout();
+        var contentLayout = new LoginLayout();
         OpenTweet.contentRegion.attachView(contentLayout);
         OpenTweet.contentRegion.show(contentLayout);
         OpenTweet.contentRegion.$el.addClass('sign-up');
