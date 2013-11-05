@@ -1,6 +1,8 @@
 define([    "controllers/applicationController",
+            "vent",
             "marionette"],
-function(   ApplicationController) {
+function(   ApplicationController,
+            EventAggregator) {
 
     "use strict";
 
@@ -12,7 +14,17 @@ function(   ApplicationController) {
 
         // controller handled routes
         appRoutes: {
-            "":         "defaultRoute"
+            "save":     "saveRoute",
+            "*path":    "defaultRoute"
+        },
+
+        initialize: function() {
+            console.log("applicationRouter - initialize");
+
+            // reset the url to base (silently)
+            this.listenTo(EventAggregator, "router:default-route", function() {
+                this.navigate('', { replace: true });
+            });
         }
     });
 });

@@ -1,6 +1,10 @@
 define([    "vent",
+            "cookie",
+            "backbone",
             "marionette"],
-function(   EventAggregator) {
+function(   EventAggregator,
+            Cookie,
+            Backbone) {
 
     "use strict";
 
@@ -9,6 +13,10 @@ function(   EventAggregator) {
         defaultRoute: function() {
             console.log("applicationRouter - defaultRoute");
             EventAggregator.trigger("router:default-route");
+        },
+
+        saveRoute: function() {
+            console.log("applicationRouter - saveRoute");
         }
     });
 });
