@@ -21,8 +21,6 @@ module.exports = function(grunt) {
                     "client/web/static/templates/title-bar-layout.js":          "client/web/js/templates/title-bar-layout.hbs",
                     // side bar nav
                     "client/web/static/templates/sidebar-nav-layout.js":        "client/web/js/templates/sidebar-nav-layout.hbs",
-                    // content
-                    "client/web/static/templates/content-layout.js":            "client/web/js/templates/content-layout.hbs",
                     // login
                     "client/web/static/templates/login-layout.js":              "client/web/js/templates/login-layout.hbs",
                     // user
