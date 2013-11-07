@@ -59,10 +59,17 @@ function(   LoginModel,
             console.log("loginLayout - onShow");
         },
 
-        loginKeyPress: function() {
+        loginKeyPress: function(event) {
             this.loginModel.set({ "userName": this.ui.userNameLogin.val().trim() });
             this.loginModel.set({ "password": this.ui.passwordLogin.val().trim() });
             this.loginModel.isValid() ? this.ui.loginButton.removeAttr("disabled") : this.ui.loginButton.attr("disabled", '');
+
+            // enter has been pressed
+            if (event.which == 13 || event.keyCode == 13) {
+                if(this.loginModel.isValid()) {
+                    UserModel.userLogin(this.loginModel.toJSON());
+                }
+            }
         },
         loginButtonClick: function() {
             console.log("loginLayout - loginButtonClick");

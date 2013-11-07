@@ -1,6 +1,7 @@
 define([    "vent",
             "backbone",
-            "underscore"],
+            "underscore",
+            "cookie"],
 function(   EventAggregator,
             Backbone,
             _) {
@@ -31,6 +32,7 @@ function(   EventAggregator,
                 dataType: 'json'
             }).done(function () {
                     console.log("UserModel - fetchUser - Done");
+                    self.trigger('user:login:success');
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {

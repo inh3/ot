@@ -5,6 +5,7 @@ define([    "layouts/titleBarLayout",
             "routers/applicationRouter",
             "backbone",
             "vent",
+            "models/userModel",
             "marionette"],
 function(   TitleBarLayout,
             SideBarNavLayout,
@@ -12,7 +13,8 @@ function(   TitleBarLayout,
             LoginLayout,
             ApplicationRouter,
             Backbone,
-            EventAggregator) {
+            EventAggregator,
+            UserModel) {
 
     "use strict";
 
@@ -74,27 +76,15 @@ function(   TitleBarLayout,
         OpenTweet.contentRegion.$el.removeClass('hidden');
     };
 
-    OpenTweet.landingPage = function() {
-
-        // update regions and layouts
-        var titleBarLayout = new TitleBarLayout();
-        OpenTweet.titleBarRegion.attachView(titleBarLayout);
-        OpenTweet.titleBarRegion.show(titleBarLayout);
-
-        var sideBarNavLayout = new SideBarNavLayout();
-        $('#side-bar-nav').addClass('hidden');
-        OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
-        OpenTweet.sideBarNavRegion.show(sideBarNavLayout);
-
-        var contentLayout = new ContentLayout();
-        OpenTweet.contentRegion.attachView(contentLayout);
-        OpenTweet.contentRegion.show(contentLayout);
-        OpenTweet.contentRegion.$el.addClass('sign-up');
-        OpenTweet.contentRegion.$el.removeClass('hidden');
+    OpenTweet.userLogin = function() {
+        console.log(UserModel.toJSON());
     };
 
     // router events
     OpenTweet.listenTo(EventAggregator, "router:default-route", OpenTweet.defaultRoute);
+
+    // login events
+    OpenTweet.listenTo(UserModel, "user:login:success", OpenTweet.userLogin);
 
     // export the app from this module
     return OpenTweet;
