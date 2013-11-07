@@ -1,7 +1,7 @@
 define([    "layouts/titleBarLayout",
             "layouts/sideBarNavLayout",
-            "layouts/contentLayout",
             "layouts/loginLayout",
+            "layouts/userLayout",
             "routers/applicationRouter",
             "backbone",
             "vent",
@@ -9,8 +9,8 @@ define([    "layouts/titleBarLayout",
             "marionette"],
 function(   TitleBarLayout,
             SideBarNavLayout,
-            ContentLayout,
             LoginLayout,
+            UserLayout,
             ApplicationRouter,
             Backbone,
             EventAggregator,
@@ -56,9 +56,6 @@ function(   TitleBarLayout,
     };
 
     OpenTweet.defaultRoute = function() {
-        // reset regions
-        //this.resetRegions();
-
         // update regions and layouts
         var titleBarLayout = new TitleBarLayout();
         OpenTweet.titleBarRegion.attachView(titleBarLayout);
@@ -69,22 +66,28 @@ function(   TitleBarLayout,
         OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
         OpenTweet.sideBarNavRegion.show(sideBarNavLayout);
 
-        var contentLayout = new LoginLayout();
-        OpenTweet.contentRegion.attachView(contentLayout);
-        OpenTweet.contentRegion.show(contentLayout);
+        var loginLayout = new LoginLayout();
+        OpenTweet.contentRegion.attachView(loginLayout);
+        OpenTweet.contentRegion.show(loginLayout);
         OpenTweet.contentRegion.$el.addClass('sign-up');
         OpenTweet.contentRegion.$el.removeClass('hidden');
     };
 
-    OpenTweet.userLogin = function() {
-        console.log(UserModel.toJSON());
+    OpenTweet.userContent = function() {
+        // update the route in the url
+        OpenTweet.appRouter.navigate("!/" + UserModel.get("user_name"));
+
+        // show the user layout
+        var userLayout = new UserLayout();
+        OpenTweet.contentRegion.attachView(userLayout);
+        OpenTweet.contentRegion.show(userLayout);
     };
 
     // router events
     OpenTweet.listenTo(EventAggregator, "router:default-route", OpenTweet.defaultRoute);
 
     // login events
-    OpenTweet.listenTo(UserModel, "user:login:success", OpenTweet.userLogin);
+    OpenTweet.listenTo(UserModel, "user:login:success", OpenTweet.userContent);
 
     // export the app from this module
     return OpenTweet;

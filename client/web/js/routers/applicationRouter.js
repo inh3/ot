@@ -14,7 +14,7 @@ function(   ApplicationController,
 
         // controller handled routes
         appRoutes: {
-            "save":     "saveRoute",
+            ":user":    "userContent",
             "*path":    "defaultRoute"
         },
 

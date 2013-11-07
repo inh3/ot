@@ -40,49 +40,51 @@ userRepository.on('user-repo:response-end:get-user-login', function(queryKey, us
     delete responseHash[queryKey];
 });
 
+// TWEET REPOSITORY ----------------------------------------------------------------------------------------------------
+
+var TweetRepository = require(__dirname + '/dal/tweetRepository.js');
+var tweetRepository = new TweetRepository();
+tweetRepository.dbConnect();
+
+// getTweetsByUserId
+tweetRepository.on('tweet-repo:response-end:get-tweets-by-user-id', function(queryKey, userTweets) {
+    // respond with user information
+    responseHash[queryKey].res.send(userTweets);
+
+    // remove query key from hashtable
+    delete responseHash[queryKey];
+});
+
 // MODULE DEFINITION ---------------------------------------------------------------------------------------------------
 
 module.exports = function(app) {
     // default path for debug
-    app.get("/*", function(req, res, next){
+    app.get("/*", function(req, res, next) {
         if(req.session !== undefined) {
             console.log(req.session);
         }
         next();
     });
 
-    app.get('/login', function(req, res){
+    // user login
+    app.get('/login', function(req, res) {
         var queryKey = userRepository.getUserLogin(req.query.userName, req.query.password);
         responseHash[queryKey] = { res: res, req: req };
     });
 
-    app.get('/save', function(req, res){
-        if (req.cookies.remember) {
-            res.send('Remembered :). Click to <a href="/forget">forget</a>!.');
-        } else {
-            res.redirect('/');
+    // get list of tweets
+    app.get('/tweets', function(req, res) {
+        // this should only work if the user is logged in
+        if((req.session !== undefined) && (req.session.user !== undefined)) {
+            var queryKey = tweetRepository.getTweetsByUserId(req.query.id);
+            responseHash[queryKey] = { res: res, req: req };
+        }
+        else {
+            res.send(401);
         }
     });
-
-    app.get('/forget', function(req, res){
-        res.clearCookie('remember');
-        res.redirect('/');
-    });
-
 
     app.get('/', function(req, res){
-        if (req.cookies.remember) {
-            res.redirect('save');
-        } else {
-            res.send(indexHtml);
-        }
+        res.send(indexHtml);
     });
-
-
-    /*app.post('/', function(req, res){
-        console.log(req.body);
-        var minute = 60000;
-        if (req.body.remember) res.cookie('remember', 1, { maxAge: minute });
-        res.redirect('save');
-    });*/
 };

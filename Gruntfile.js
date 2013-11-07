@@ -24,7 +24,11 @@ module.exports = function(grunt) {
                     // content
                     "client/web/static/templates/content-layout.js":            "client/web/js/templates/content-layout.hbs",
                     // login
-                    "client/web/static/templates/login-layout.js":            "client/web/js/templates/login-layout.hbs"
+                    "client/web/static/templates/login-layout.js":              "client/web/js/templates/login-layout.hbs",
+                    // user
+                    "client/web/static/templates/user-layout.js":               "client/web/js/templates/user-layout.hbs",
+                    // tweet item view
+                    "client/web/static/templates/tweet-item-view.js":           "client/web/js/templates/tweet-item-view.hbs"
                 }
             }
         }

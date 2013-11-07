@@ -15,8 +15,8 @@ function(   EventAggregator,
             EventAggregator.trigger("router:default-route");
         },
 
-        saveRoute: function() {
-            console.log("applicationRouter - saveRoute");
+        userContent: function(userName) {
+
         }
     });
 });
