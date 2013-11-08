@@ -34,6 +34,11 @@ function(   TitleBarLayout,
 
         // attach main router and controller to application
         OpenTweet.appRouter = new ApplicationRouter();
+
+        // show title bar
+        var titleBarLayout = new TitleBarLayout();
+        OpenTweet.titleBarRegion.attachView(titleBarLayout);
+        OpenTweet.titleBarRegion.show(titleBarLayout);
     });
 
     OpenTweet.on("initialize:before", function(options) {
@@ -56,11 +61,8 @@ function(   TitleBarLayout,
     };
 
     OpenTweet.defaultRoute = function() {
-        // update regions and layouts
-        var titleBarLayout = new TitleBarLayout();
-        OpenTweet.titleBarRegion.attachView(titleBarLayout);
-        OpenTweet.titleBarRegion.show(titleBarLayout);
 
+        // update regions and layouts
         var sideBarNavLayout = new SideBarNavLayout();
         $('#side-bar-nav').addClass('hidden');
         OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
@@ -74,20 +76,21 @@ function(   TitleBarLayout,
     };
 
     OpenTweet.userContent = function() {
-        // update the route in the url
-        OpenTweet.appRouter.navigate("!/" + UserModel.get("user_name"));
 
         // show the user layout
         var userLayout = new UserLayout();
         OpenTweet.contentRegion.attachView(userLayout);
         OpenTweet.contentRegion.show(userLayout);
+        OpenTweet.contentRegion.$el.addClass('sign-up');
+        OpenTweet.contentRegion.$el.removeClass('hidden');
     };
 
     // router events
-    OpenTweet.listenTo(EventAggregator, "router:default-route", OpenTweet.defaultRoute);
+    OpenTweet.listenTo(EventAggregator, "controller:default-route", OpenTweet.defaultRoute);
 
     // login events
     OpenTweet.listenTo(UserModel, "user:login:success", OpenTweet.userContent);
+    OpenTweet.listenTo(UserModel, "user:get:success", OpenTweet.userContent);
 
     // export the app from this module
     return OpenTweet;

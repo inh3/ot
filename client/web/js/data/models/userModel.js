@@ -54,6 +54,43 @@ function(   TweetCollection,
             });
         },
 
+        getUser: function(userId) {
+            console.log("UserModel - getUser");
+
+            // store reference to self
+            var self = this;
+
+            // cancel previous fetch if it exists
+            if (this.userRequest !== undefined) {
+                this.userRequest.abort();
+            }
+
+            // set url for login
+            this.url = '/user';
+
+            // fetch new data (reset collection on result)
+            this.userRequest = this.fetch({
+                reset: true,
+                data: {
+                    id: userId
+                },
+                dataType: 'json'
+            }).done(function () {
+                    console.log("UserModel - getUser - Done");
+                    self.trigger('user:get:success');
+            }).fail(function (jqXhr) {
+                // don't trigger error if abort
+                if (jqXhr.statusText !== "abort") {
+                    console.log("UserModel - getUser - Error");
+                }
+            }).always(function () {
+                console.log("UserModel - getUser - Always");
+
+                // remove reference to fetch request because it is done
+                delete self.userRequest;
+            });
+        },
+
         getTweets: function() {
             // get tweets for the user
             this.get('tweets').fetchTweets(this.get('id'));

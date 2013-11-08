@@ -19,7 +19,13 @@ module.exports = function(app, express) {
     // for signing the cookies.
     //app.use(express.cookieParser('open-tweet-secret'));
     app.use(express.cookieParser());
-    app.use(express.session({secret: 'open-tweet-secret'}));
+    app.use(express.session({
+        secret: 'open-tweet-secret',
+        cookie: {
+            // 5 minutes
+            maxAge: 60000 * 5
+        }
+    }));
 
     // parses json, x-www-form-urlencoded
     app.use(express.json());

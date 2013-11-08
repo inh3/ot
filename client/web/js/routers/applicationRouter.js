@@ -1,7 +1,9 @@
-define([    "controllers/applicationController",
+define([    "models/userModel",
+            "controllers/applicationController",
             "vent",
             "marionette"],
-function(   ApplicationController,
+function(   UserModel,
+            ApplicationController,
             EventAggregator) {
 
     "use strict";
@@ -14,16 +16,29 @@ function(   ApplicationController,
 
         // controller handled routes
         appRoutes: {
-            "!/:user":    "userContent",
-            "*path":    "defaultRoute"
+            "!/:user":    "userRoute",
+            "*path":      "defaultRoute"
         },
 
         initialize: function() {
             console.log("applicationRouter - initialize");
 
-            // reset the url to base (silently)
-            this.listenTo(EventAggregator, "router:default-route", function() {
+            // listen for controller to set blank path
+            this.listenTo(EventAggregator, "controller:default-route", function() {
                 this.navigate('', { replace: true });
+            });
+
+            // listen for controller to set blank path
+            this.listenTo(EventAggregator, "controller:user-active", function() {
+                this.navigate('!/' + UserModel.get('user_name'), { replace: true });
+            });
+
+            this.listenTo(UserModel, "user:login:success", function() {
+                this.navigate("!/" + UserModel.get("user_name"), { replace: true });
+            });
+
+            this.listenTo(UserModel, "user:get:success", function() {
+                this.navigate('!/' + UserModel.get('user_name'), { replace: true });
             });
         }
     });
