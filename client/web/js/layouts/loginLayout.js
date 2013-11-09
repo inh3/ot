@@ -17,13 +17,14 @@ function(   LoginModel,
 
     return Backbone.Marionette.Layout.extend({
 
-        el: '#content',
+        tagName: "div",
+        className: "panel panel-default",
 
         template: Handlebars.templates["login-layout.hbs"],
 
         ui: {
-            userNameLogin:      "#username-login",
-            passwordLogin:      "#password-login",
+            userNameLogin:      "#login-user-name",
+            passwordLogin:      "#login-password",
             loginButton:        "#login-button",
 
             userNameSignUp:     "#username-sign-up",
@@ -34,8 +35,8 @@ function(   LoginModel,
         },
 
         events: {
-            "keyup #username-login":        "loginKeyPress",
-            "keyup #password-login":        "loginKeyPress",
+            "keyup #login-user-name":       "loginKeyPress",
+            "keyup #login-password":        "loginKeyPress",
             "click #login-button":          "loginButtonClick",
 
             "keyup #username-sign-up":      "signUpKeyPress",
@@ -53,11 +54,6 @@ function(   LoginModel,
             // debounce the login buttons
             this.loginButtonClick = _.debounce(this.loginButtonClick, 1000, true);
             this.signUpButtonClick = _.debounce(this.loginButtonClick, 1000, true);
-        },
-
-        onRender: function() {
-            this.$el.addClass('sign-up');
-            this.$el.removeClass('hidden');
         },
 
         onShow: function() {

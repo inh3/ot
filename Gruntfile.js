@@ -17,10 +17,10 @@ module.exports = function(grunt) {
                     amd: true
                 },
                 files: {
-                    // title bar
-                    "client/web/static/templates/title-bar-layout.js":          "client/web/js/templates/title-bar-layout.hbs",
-                    // side bar nav
-                    "client/web/static/templates/sidebar-nav-layout.js":        "client/web/js/templates/sidebar-nav-layout.hbs",
+                    // navigation bar
+                    "client/web/static/templates/navigation-bar-layout.js":     "client/web/js/templates/navigation-bar-layout.hbs",
+                    // side bar
+                    "client/web/static/templates/side-bar-layout.js":           "client/web/js/templates/side-bar-layout.hbs",
                     // login
                     "client/web/static/templates/login-layout.js":              "client/web/js/templates/login-layout.hbs",
                     // user

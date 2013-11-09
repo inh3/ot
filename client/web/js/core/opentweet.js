@@ -1,5 +1,5 @@
-define([    "layouts/titleBarLayout",
-            "layouts/sideBarNavLayout",
+define([    "layouts/navigationBarLayout",
+            "layouts/sideBarLayout",
             "layouts/loginLayout",
             "layouts/userLayout",
             "layouts/userFollowersLayout",
@@ -9,8 +9,8 @@ define([    "layouts/titleBarLayout",
             "vent",
             "appUser",
             "marionette"],
-function(   TitleBarLayout,
-            SideBarNavLayout,
+function(   NavigationBarLayout,
+            SideBarLayout,
             LoginLayout,
             UserLayout,
             UserFollowersLayout,
@@ -27,8 +27,8 @@ function(   TitleBarLayout,
 
     // add regions to application
     OpenTweet.addRegions({
-        titleBarRegion: "#title-bar",
-        sideBarNavRegion: "#side-bar-nav",
+        navigationBarRegion: "#navigation-bar",
+        sideBarRegion: "#side-bar",
         contentRegion: "#content"
     });
 
@@ -39,10 +39,17 @@ function(   TitleBarLayout,
         // attach main router and controller to application
         OpenTweet.appRouter = new ApplicationRouter();
 
-        // show title bar
-        var titleBarLayout = new TitleBarLayout();
-        OpenTweet.titleBarRegion.attachView(titleBarLayout);
-        OpenTweet.titleBarRegion.show(titleBarLayout);
+        // show navigation bar
+        this.navigationBarLayout = new NavigationBarLayout();
+        OpenTweet.navigationBarRegion.show(this.navigationBarLayout);
+
+        // create other views
+
+        this.sideBarLayout = new SideBarLayout({ model: AppUser });
+        this.loginLayout = new LoginLayout();
+        this.userLayout = new UserLayout({ model: AppUser });
+        this.userFollowers = new UserFollowersLayout({ model: AppUser });
+        this.userFollowing = new UserFollowingLayout({ model: AppUser });
     });
 
     OpenTweet.on("initialize:before", function(options) {
@@ -59,72 +66,49 @@ function(   TitleBarLayout,
     });
 
     OpenTweet.resetRegions = function() {
-        OpenTweet.titleBarRegion.reset();
-        OpenTweet.sideBarNavRegion.reset();
+        OpenTweet.navigationBarRegion.reset();
+        OpenTweet.sideBarRegion.reset();
         OpenTweet.contentRegion.reset();
     };
 
     OpenTweet.userLogin = function() {
 
         // hide side-bar navigation
-        $('#side-bar-nav').addClass('hidden');
-        OpenTweet.sideBarNavRegion.reset();
+        $('#side-bar').addClass('hidden');
+        OpenTweet.sideBarRegion.reset();
 
-        var loginLayout = new LoginLayout();
-        OpenTweet.contentRegion.attachView(loginLayout);
-        OpenTweet.contentRegion.show(loginLayout);
+        OpenTweet.contentRegion.show(this.loginLayout);
     };
 
     OpenTweet.userDefault = function() {
 
         // show side bar
-        var sideBarNavLayout = new SideBarNavLayout({
-            model: AppUser
-        });
-        $('#side-bar-nav').removeClass('hidden');
-        OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
-        OpenTweet.sideBarNavRegion.show(sideBarNavLayout);
+        $('#side-bar').removeClass('hidden');
+        OpenTweet.sideBarRegion.show(this.sideBarLayout);
 
         // show the user layout
-        var userLayout = new UserLayout({
-            model: AppUser
-        });
-        OpenTweet.contentRegion.attachView(userLayout);
-        OpenTweet.contentRegion.show(userLayout);
+        OpenTweet.contentRegion.attachView(this.userLayout);
+        OpenTweet.contentRegion.show(this.userLayout);
     };
 
     OpenTweet.userFollowers = function() {
         // show side bar
-        var sideBarNavLayout = new SideBarNavLayout({
-            model: AppUser
-        });
-        $('#side-bar-nav').removeClass('hidden');
-        OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
-        OpenTweet.sideBarNavRegion.show(sideBarNavLayout);
+        $('#side-bar').removeClass('hidden');
+        OpenTweet.sideBarRegion.show(this.sideBarLayout);
 
         // show the followers tweet view
-        var userFollowers = new UserFollowersLayout({
-            model: AppUser
-        });
-        OpenTweet.contentRegion.attachView(userFollowers);
-        OpenTweet.contentRegion.show(userFollowers);
+        OpenTweet.contentRegion.attachView(this.userFollowers);
+        OpenTweet.contentRegion.show(this.userFollowers);
     };
 
     OpenTweet.userFollowing = function() {
         // show side bar
-        var sideBarNavLayout = new SideBarNavLayout({
-            model: AppUser
-        });
-        $('#side-bar-nav').removeClass('hidden');
-        OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
-        OpenTweet.sideBarNavRegion.show(sideBarNavLayout);
+        $('#side-bar').removeClass('hidden');
+        OpenTweet.sideBarRegion.show(this.sideBarLayout);
 
         // show the followers tweet view
-        var userFollowing = new UserFollowingLayout({
-            model: AppUser
-        });
-        OpenTweet.contentRegion.attachView(userFollowing);
-        OpenTweet.contentRegion.show(userFollowing);
+        OpenTweet.contentRegion.attachView(this.userFollowing);
+        OpenTweet.contentRegion.show(this.userFollowing);
     };
 
     // controller events

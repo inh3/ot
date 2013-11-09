@@ -1,5 +1,5 @@
 /* import other css files */
-@import url("nav.css");
+/*@import url("nav.css");
 @import url("content.css");
 @import url("title-bar.css");
 @import url("forms.css");
@@ -14,5 +14,28 @@ div.container {
 }
 
 li.bottom {
+    margin-bottom: 0;
+}*/
+
+body {
+    padding-top: 60px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.top-level {
+    border-style: solid;
+    border-color: #cccccc;
+    border-width: 2px;
+    padding: 5px;
+}
+
+#side-bar div.list-group {
+    margin-bottom: 0;
+}
+
+.form-group.bottom {
     margin-bottom: 0;
 }

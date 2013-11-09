@@ -22,12 +22,11 @@ function(   UserTweetsCollectionView,
 
         initialize: function() {
             console.log("contentLayout - initialize");
-
-            console.log(this.options);
-            this.model.getTweets();
         },
 
         onRender: function() {
+            this.model.getTweets();
+
             var userTweetsView = new UserTweetsCollectionView({
                 collection: this.model.get('tweets')
             });

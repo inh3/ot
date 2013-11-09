@@ -1,62 +1,42 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<html lang="en">
 <head>
-
-    <!-- Basic Page Needs
-  ================================================== -->
-    <meta charset="utf-8">
-    <title>Open Tweet</title>
+    <title>OpenTweet</title>
+    <meta http-equiv="content-type" content="text-html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <!-- Mobile Specific Metas
-  ================================================== -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- css styles -->
+    <link href="lib/bootstrap/bootstrap-dist-3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
 
-    <!-- CSS
-  ================================================== -->
-    <link rel="stylesheet" href="lib/skeleton/stylesheets/base.css">
-    <link rel="stylesheet" href="lib/skeleton/stylesheets/skeleton.css">
-    <link rel="stylesheet" href="lib/skeleton/stylesheets/layout.css">
-    <link rel="stylesheet" href="css/custom.css">
-
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="lib/bootstrap/bootstrap-dist-3.0.0/js/html5shiv.js"></script>
+    <script src="lib/bootstrap/bootstrap-dist-3.0.0/js/respond.min.js"></script>
     <![endif]-->
 
-    <!-- Favicons
-        ================================================== -->
-    <link rel="shortcut icon" href="lib/skeleton/images/favicon.ico">
-    <link rel="apple-touch-icon" href="lib/skeleton/images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="lib/skeleton/images/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="lib/skeleton/images/apple-touch-icon-114x114.png">
-
 </head>
+
 <body>
 
+<!-- navigation bar -->
+<header id="navigation-bar" class="navbar navbar-default navbar-fixed-top" role="navigation"></header>
 
-
-<!-- Primary Page Layout
-================================================== -->
-
-<!-- FIXED TITLE BAR - BEGIN -->
-<div id="title-bar"></div>
-<!-- FIXED TITLE BAR - END -->
-
-<!-- CONTAINER - BEGIN -->
+<!-- application container -->
 <div class="container">
-    <div id="side-bar-nav" class="three columns sidebar hidden"></div>
-    <div id="content" class="twelve columns content hidden"></div>
+    <div class="row">
+        <!-- application side-bar -->
+        <div id="side-bar" class="col-sm-4"></div>
+        <!-- application content -->
+        <div id="content" class="col-sm-8"></div>
+    </div>
 </div>
-<!-- CONTAINER - END -->
 
 <!-- application -->
 <script type="text/javascript" charset="utf-8" data-main="js/main.js" src="js/require.min.js"></script>
 
-<!-- End Document
-================================================== -->
 </body>
 </html>

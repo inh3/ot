@@ -22,10 +22,10 @@ function(   UserFollowersCollectionView,
 
         initialize: function() {
             console.log("userFollowersLayout - initialize");
-            this.model.getFollowers();
         },
 
         onRender: function() {
+            this.model.getFollowers();
             var userFollowersView = new UserFollowersCollectionView({
                 collection: this.model.get('followers')
             });

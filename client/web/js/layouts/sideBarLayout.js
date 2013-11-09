@@ -1,6 +1,6 @@
 define([    "vent",
             "handlebars",
-            "templates/title-bar-layout",
+            "templates/side-bar-layout",
             "marionette"],
 function(   EventAggregator,
             Handlebars) {
@@ -9,16 +9,17 @@ function(   EventAggregator,
 
     return Backbone.Marionette.Layout.extend({
 
-        el: '#title-bar',
+        tagName: "div",
+        className: "panel panel-default",
 
-        template: Handlebars.templates["title-bar-layout.hbs"],
+        template: Handlebars.templates["side-bar-layout.hbs"],
 
         initialize: function() {
-            //console.log("titleBarLayout - initialize")
+            console.log("sideBarNavLayout - initialize")
         },
 
         onShow: function() {
-            //console.log("titleBarLayout - onShow");
+            console.log("sideBarNavLayout - onShow");
         }
     });
 });
