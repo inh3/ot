@@ -14,3 +14,25 @@ body {
 .form-group.bottom {
     margin-bottom: 0;
 }
+
+/* media queries */
+
+@media (min-width: 992px) {
+    #side-bar div.panel.panel-default {
+        position: fixed;
+        width: 213px;
+    }
+}
+
+@media (min-width: 1200px) {
+    #side-bar div.panel.panel-default {
+        position: fixed;
+        width: 263px;
+    }
+}
+
+@media (max-width: 767px) {
+    #side-bar div.panel.panel-default {
+        position: relative;
+    }
+}
