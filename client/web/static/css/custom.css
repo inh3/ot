@@ -1,32 +1,14 @@
-/* import other css files */
-/*@import url("nav.css");
-@import url("content.css");
-@import url("title-bar.css");
-@import url("forms.css");
-@import url("media-query.css");
-
-.hidden {
-    display: none !important;
-}
-
-div.container {
-    padding-top: 60px;
-}
-
-li.bottom {
-    margin-bottom: 0;
-}*/
-
 body {
     padding-top: 60px;
 }
 
-.hidden {
-    display: none !important;
-}
-
 #side-bar div.list-group {
     margin-bottom: 0;
+}
+
+#side-bar-heading h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .form-group.bottom {

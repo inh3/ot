@@ -1,7 +1,7 @@
 define([    "compositeViews/userTweetsCompositeView",
             "vent",
             "handlebars",
-            "templates/user-layout",
+            "templates/user-tweets-layout",
             "marionette"],
 function(   UserTweetsCompositeView,
             EventAggregator,
@@ -13,15 +13,18 @@ function(   UserTweetsCompositeView,
 
         el: '#content',
 
-        template: Handlebars.templates["user-layout.hbs"],
+        template: Handlebars.templates["user-tweets-layout.hbs"],
 
         regions: {
-            headerRegion: "#user-layout-header",
-            contentRegion: "#user-layout-content"
+            headerRegion: "#user-tweets-layout-header",
+            contentRegion: "#user-tweets-layout-content"
         },
 
         initialize: function() {
-            console.log("contentLayout - initialize");
+            console.log("userTweetsLayout - initialize");
+
+            // listen for model changes
+            this.listenTo(this.model, "change", this.render);
         },
 
         onRender: function() {
@@ -31,13 +34,10 @@ function(   UserTweetsCompositeView,
                 collection: this.model.get('tweets')
             });
             this.contentRegion.show(userTweetsView);
-
-            this.$el.removeClass('sign-up');
-            this.$el.removeClass('hidden');
         },
 
         onShow: function() {
-            console.log("contentLayout - onShow");
+            console.log("userTweetsLayout - onShow");
         }
     });
 });

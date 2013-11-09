@@ -17,6 +17,7 @@ function(   ApplicationController,
         // controller handled routes
         appRoutes: {
             "!/:user":              "userDefault",
+            "!/:user/tweets":       "userTweets",
             "!/:user/following":    "userFollowing",
             "!/:user/followers":    "userFollowers",
             "*path":                "userLogin"

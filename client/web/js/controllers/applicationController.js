@@ -58,6 +58,29 @@ function(   UserModel,
             });
         },
 
+        userTweets: function(userName) {
+
+            console.log("applicationController - userTweets");
+
+            var userPromise = new $.Deferred();
+            if(AppUser.get('user_name') !== userName) {
+                this.listenToOnce(EventAggregator, "user:get:complete", function(getStatus) {
+                    getStatus === true ? userPromise.resolve() : userPromise.reject();
+                });
+                AppUser.getUserByName(userName);
+            }
+            else {
+                userPromise.resolve();
+            }
+
+            userPromise.done(function() {
+                EventAggregator.trigger("controller:user-tweets", AppUser);
+            });
+            userPromise.fail(function() {
+                EventAggregator.trigger("controller:login");
+            });
+        },
+
         userFollowing: function(userName) {
             console.log("applicationController - userFollowing");
 

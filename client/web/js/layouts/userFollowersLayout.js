@@ -22,6 +22,9 @@ function(   UserFollowersCompositeView,
 
         initialize: function() {
             console.log("userFollowersLayout - initialize");
+
+            // listen for model changes
+            this.listenTo(this.model, "change", this.render);
         },
 
         onRender: function() {
@@ -30,8 +33,6 @@ function(   UserFollowersCompositeView,
                 collection: this.model.get('followers')
             });
             this.contentRegion.show(userFollowersView);
-            this.$el.removeClass('sign-up');
-            this.$el.removeClass('hidden');
         },
 
         onShow: function() {

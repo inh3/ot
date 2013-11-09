@@ -13,7 +13,7 @@ function(   UserItemView,
         tagName: "div",
         className: "panel panel-default",
 
-        template: Handlebars.templates["user-following-composite-view.hbs"],
+        template: Handlebars.templates["user-followers-composite-view.hbs"],
 
         // view for each model in the collection
         itemView: UserItemView,

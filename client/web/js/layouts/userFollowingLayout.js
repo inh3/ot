@@ -22,6 +22,9 @@ function(   UserFollowingCompositeView,
 
         initialize: function() {
             console.log("userFollowingLayout - initialize");
+
+            // listen for model changes
+            this.listenTo(this.model, "change", this.render);
         },
 
         onRender: function() {
@@ -30,8 +33,6 @@ function(   UserFollowingCompositeView,
                 collection: this.model.get('following')
             });
             this.contentRegion.show(userFollowingView);
-            this.$el.removeClass('sign-up');
-            this.$el.removeClass('hidden');
         },
 
         onShow: function() {
