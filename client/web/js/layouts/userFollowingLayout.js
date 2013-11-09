@@ -1,9 +1,9 @@
-define([    "collectionViews/userFollowingCollectionView",
+define([    "compositeViews/userFollowingCompositeView",
             "vent",
             "handlebars",
             "templates/user-following-layout",
             "marionette"],
-function(   UserFollowingCollectionView,
+function(   UserFollowingCompositeView,
             EventAggregator,
             Handlebars) {
 
@@ -26,7 +26,7 @@ function(   UserFollowingCollectionView,
 
         onRender: function() {
             this.model.getFollowing();
-            var userFollowingView = new UserFollowingCollectionView({
+            var userFollowingView = new UserFollowingCompositeView({
                 collection: this.model.get('following')
             });
             this.contentRegion.show(userFollowingView);

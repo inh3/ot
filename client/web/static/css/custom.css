@@ -25,13 +25,6 @@ body {
     display: none !important;
 }
 
-.top-level {
-    border-style: solid;
-    border-color: #cccccc;
-    border-width: 2px;
-    padding: 5px;
-}
-
 #side-bar div.list-group {
     margin-bottom: 0;
 }

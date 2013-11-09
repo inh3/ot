@@ -1,9 +1,9 @@
-define([    "collectionViews/userTweetsCollectionView",
+define([    "compositeViews/userTweetsCompositeView",
             "vent",
             "handlebars",
             "templates/user-layout",
             "marionette"],
-function(   UserTweetsCollectionView,
+function(   UserTweetsCompositeView,
             EventAggregator,
             Handlebars) {
 
@@ -27,7 +27,7 @@ function(   UserTweetsCollectionView,
         onRender: function() {
             this.model.getTweets();
 
-            var userTweetsView = new UserTweetsCollectionView({
+            var userTweetsView = new UserTweetsCompositeView({
                 collection: this.model.get('tweets')
             });
             this.contentRegion.show(userTweetsView);

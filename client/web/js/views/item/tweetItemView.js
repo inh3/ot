@@ -7,6 +7,9 @@ function(   Handlebars) {
 
     return Backbone.Marionette.ItemView.extend({
 
+        tagName: "div",
+        className: "list-group-item",
+
         template: Handlebars.templates["tweet-item-view.hbs"],
 
         onShow: function() {
