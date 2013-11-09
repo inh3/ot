@@ -3,20 +3,22 @@ define([    "layouts/titleBarLayout",
             "layouts/loginLayout",
             "layouts/userLayout",
             "layouts/userFollowersLayout",
+            "layouts/userFollowingLayout",
             "routers/applicationRouter",
             "backbone",
             "vent",
-            "models/userModel",
+            "appUser",
             "marionette"],
 function(   TitleBarLayout,
             SideBarNavLayout,
             LoginLayout,
             UserLayout,
             UserFollowersLayout,
+            UserFollowingLayout,
             ApplicationRouter,
             Backbone,
             EventAggregator,
-            UserModel) {
+            AppUser) {
 
     "use strict";
 
@@ -62,7 +64,7 @@ function(   TitleBarLayout,
         OpenTweet.contentRegion.reset();
     };
 
-    OpenTweet.defaultRoute = function() {
+    OpenTweet.userLogin = function() {
 
         // hide side-bar navigation
         $('#side-bar-nav').addClass('hidden');
@@ -73,50 +75,63 @@ function(   TitleBarLayout,
         OpenTweet.contentRegion.show(loginLayout);
     };
 
-    OpenTweet.userContent = function() {
+    OpenTweet.userDefault = function() {
 
         // show side bar
         var sideBarNavLayout = new SideBarNavLayout({
-            model: UserModel
+            model: AppUser
         });
         $('#side-bar-nav').removeClass('hidden');
         OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
         OpenTweet.sideBarNavRegion.show(sideBarNavLayout);
 
         // show the user layout
-        var userLayout = new UserLayout();
+        var userLayout = new UserLayout({
+            model: AppUser
+        });
         OpenTweet.contentRegion.attachView(userLayout);
         OpenTweet.contentRegion.show(userLayout);
     };
 
-    OpenTweet.userFollowing = function() {
+    OpenTweet.userFollowers = function() {
         // show side bar
         var sideBarNavLayout = new SideBarNavLayout({
-            model: UserModel
+            model: AppUser
         });
         $('#side-bar-nav').removeClass('hidden');
         OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
         OpenTweet.sideBarNavRegion.show(sideBarNavLayout);
 
         // show the followers tweet view
-        var userFollowers = new UserFollowersLayout();
+        var userFollowers = new UserFollowersLayout({
+            model: AppUser
+        });
         OpenTweet.contentRegion.attachView(userFollowers);
         OpenTweet.contentRegion.show(userFollowers);
-        OpenTweet.contentRegion.$el.removeClass('sign-up');
-        OpenTweet.contentRegion.$el.removeClass('hidden');
     };
 
-    OpenTweet.userFollowers = function() {
+    OpenTweet.userFollowing = function() {
+        // show side bar
+        var sideBarNavLayout = new SideBarNavLayout({
+            model: AppUser
+        });
+        $('#side-bar-nav').removeClass('hidden');
+        OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
+        OpenTweet.sideBarNavRegion.show(sideBarNavLayout);
 
+        // show the followers tweet view
+        var userFollowing = new UserFollowingLayout({
+            model: AppUser
+        });
+        OpenTweet.contentRegion.attachView(userFollowing);
+        OpenTweet.contentRegion.show(userFollowing);
     };
 
     // controller events
-    OpenTweet.listenTo(EventAggregator, "controller:default-route", OpenTweet.defaultRoute);
-    OpenTweet.listenTo(EventAggregator, "controller:user-followers", OpenTweet.userFollowing);
-
-    // login events
-    OpenTweet.listenTo(UserModel, "user:login:success", OpenTweet.userContent);
-    OpenTweet.listenTo(UserModel, "user:get:success", OpenTweet.userContent);
+    OpenTweet.listenTo(EventAggregator, "controller:login", OpenTweet.userLogin);
+    OpenTweet.listenTo(EventAggregator, "controller:user-default", OpenTweet.userDefault);
+    OpenTweet.listenTo(EventAggregator, "controller:user-followers", OpenTweet.userFollowers);
+    OpenTweet.listenTo(EventAggregator, "controller:user-following", OpenTweet.userFollowing);
 
     // export the app from this module
     return OpenTweet;

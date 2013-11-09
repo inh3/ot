@@ -1,11 +1,9 @@
 define([    "collectionViews/userTweetsCollectionView",
-            "models/userModel",
             "vent",
             "handlebars",
             "templates/user-layout",
             "marionette"],
 function(   UserTweetsCollectionView,
-            UserModel,
             EventAggregator,
             Handlebars) {
 
@@ -24,12 +22,14 @@ function(   UserTweetsCollectionView,
 
         initialize: function() {
             console.log("contentLayout - initialize");
-            UserModel.getTweets();
+
+            console.log(this.options);
+            this.model.getTweets();
         },
 
         onRender: function() {
             var userTweetsView = new UserTweetsCollectionView({
-                collection: UserModel.get('tweets')
+                collection: this.model.get('tweets')
             });
             this.contentRegion.show(userTweetsView);
 

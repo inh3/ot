@@ -13,6 +13,9 @@ require.config({
     // .js is included automatically
     paths: {
 
+        // application user
+        appUser:            "core/appUser",
+
         // event manager
         vent:               "core/vent",
 

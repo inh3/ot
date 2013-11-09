@@ -1,6 +1,6 @@
 define([    "models/loginModel",
             "models/signUpModel",
-            "models/userModel",
+            "appUser",
             "vent",
             "underscore",
             "handlebars",
@@ -8,7 +8,7 @@ define([    "models/loginModel",
             "marionette"],
 function(   LoginModel,
             SignUpModel,
-            UserModel,
+            AppUser,
             EventAggregator,
             _,
             Handlebars) {
@@ -72,14 +72,14 @@ function(   LoginModel,
             // enter has been pressed
             if (event.which == 13 || event.keyCode == 13) {
                 if(this.loginModel.isValid()) {
-                    UserModel.userLogin(this.loginModel.toJSON());
+                    AppUser.userLogin(this.loginModel.toJSON());
                 }
             }
         },
         loginButtonClick: function() {
             console.log("loginLayout - loginButtonClick");
 
-            UserModel.userLogin(this.loginModel.toJSON());
+            AppUser.userLogin(this.loginModel.toJSON());
         },
 
         signUpKeyPress: function() {

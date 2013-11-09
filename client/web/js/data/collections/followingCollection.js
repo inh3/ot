@@ -1,6 +1,6 @@
 define([    "vent",
-            "backbone",
-            "underscore"],
+        "backbone",
+        "underscore"],
 function(   EventAggregator,
             Backbone,
             _) {
@@ -11,22 +11,22 @@ function(   EventAggregator,
 
         url: "/follow",
 
-        fetchFollowers: function(userId) {
-            console.log("followerCollection - fetchFollowers");
+        fetchFollowing: function(userId) {
+            console.log("followingCollection - fetchFollowers");
 
             // store reference to self
             var self = this;
 
             // cancel previous fetch if it exists
-            if (this.followerRequest !== undefined) {
-                this.followerRequest.abort();
+            if (this.followingRequest !== undefined) {
+                this.followingRequest.abort();
             }
 
             // set url for login
-            this.url = '/followers';
+            this.url = '/following';
 
             // fetch new data (reset collection on result)
-            this.followerRequest = this.fetch({
+            this.followingRequest = this.fetch({
                 reset: true,
                 data: { id: userId },
                 dataType: 'json'
@@ -41,7 +41,7 @@ function(   EventAggregator,
                 console.log("followerCollection - fetchFollowers - Always");
 
                 // remove reference to fetch request because it is done
-                delete self.followerRequest;
+                delete self.followingRequest;
             });
         }
     });

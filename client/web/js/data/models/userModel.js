@@ -1,18 +1,20 @@
 define([    "collections/tweetCollection",
             "collections/followerCollection",
+            "collections/followingCollection",
             "vent",
             "backbone",
             "underscore",
             "cookie"],
 function(   TweetCollection,
             FollowerCollection,
+            FollowingCollection,
             EventAggregator,
             Backbone,
             _) {
 
     "use strict";
 
-    var UserModel = Backbone.Model.extend({
+    return Backbone.Model.extend({
 
         initialize: function() {
 
@@ -21,6 +23,9 @@ function(   TweetCollection,
 
             // create empty set of followers
             this.set('followers', new FollowerCollection());
+
+            // create empty set of followers
+            this.set('following', new FollowingCollection());
         },
 
         userLogin: function(userCredentials) {
@@ -44,15 +49,16 @@ function(   TweetCollection,
                 data: userCredentials,
                 dataType: 'json'
             }).done(function () {
-                    console.log("UserModel - fetchUser - Done");
-                    self.trigger('user:login:success');
+                    console.log("UserModel - userLogin - Done");
+                    EventAggregator.trigger('user:login:complete', true);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
-                    console.log("UserModel - fetchUser - Error");
+                    console.log("UserModel - userLogin - Error");
+                    EventAggregator.trigger('user:login:complete', false);
                 }
             }).always(function () {
-                console.log("UserModel - fetchUser - Always");
+                console.log("UserModel - userLogin - Always");
 
                 // remove reference to fetch request because it is done
                 delete self.loginRequest;
@@ -82,17 +88,56 @@ function(   TweetCollection,
                 dataType: 'json'
             }).done(function () {
                     console.log("UserModel - getUser - Done");
-                    self.trigger('user:get:success');
+                    EventAggregator.trigger('user:get:complete', true);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
                     console.log("UserModel - getUser - Error");
+                    EventAggregator.trigger('user:get:complete', false);
                 }
             }).always(function () {
                 console.log("UserModel - getUser - Always");
 
                 // remove reference to fetch request because it is done
                 delete self.userRequest;
+            });
+        },
+
+        getUserByName: function(userName) {
+            console.log("UserModel - getUserByName");
+
+            // store reference to self
+            var self = this;
+
+            // cancel previous fetch if it exists
+            if (this.userByNameRequest !== undefined) {
+                this.userByNameRequest.abort();
+            }
+
+            // set url for login
+            this.url = '/user';
+
+            // fetch new data (reset collection on result)
+            this.userByNameRequest = this.fetch({
+                reset: true,
+                data: {
+                    userName: userName
+                },
+                dataType: 'json'
+            }).done(function () {
+                    console.log("UserModel - getUserByName - Done");
+                    EventAggregator.trigger('user:get:complete', true);
+            }).fail(function (jqXhr) {
+                // don't trigger error if abort
+                if (jqXhr.statusText !== "abort") {
+                    console.log("UserModel - getUserByName - Error");
+                    EventAggregator.trigger('user:get:complete', false);
+                }
+            }).always(function () {
+                console.log("UserModel - getUserByName - Always");
+
+                // remove reference to fetch request because it is done
+                delete self.userByNameRequest;
             });
         },
 
@@ -105,7 +150,9 @@ function(   TweetCollection,
             // get followers for the user
             this.get('followers').fetchFollowers(this.get('id'));
         },
-    });
 
-    return new UserModel();
+        getFollowing: function() {
+            this.get('following').fetchFollowing(this.get('id'));
+        }
+    });
 });

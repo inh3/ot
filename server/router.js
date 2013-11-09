@@ -54,6 +54,11 @@ userRepository.on('user-repo:response-end:get-user', function(queryKey, userObje
     delete responseHash[queryKey];
 });
 
+userRepository.on('user-repo:response-end:get-user-by-name', function(queryKey, userObject) {
+    userObject ? responseHash[queryKey].res.send(userObject) : responseHash[queryKey].res.send(404);
+    delete responseHash[queryKey];
+});
+
 // TWEET REPOSITORY ----------------------------------------------------------------------------------------------------
 
 var TweetRepository = require(__dirname + '/dal/tweetRepository.js');
@@ -78,6 +83,14 @@ followRepository.dbConnect();
 followRepository.on('follow-repo:response-end:get-followers-by-user-id', function(queryKey, userFollowers) {
     // respond with follower information
     responseHash[queryKey].res.send(userFollowers);
+
+    // remove query key from hashtable
+    delete responseHash[queryKey];
+});
+
+followRepository.on('follow-repo:response-end:get-following-by-user-id', function(queryKey, followingUsers) {
+    // respond with following information
+    responseHash[queryKey].res.send(followingUsers);
 
     // remove query key from hashtable
     delete responseHash[queryKey];
@@ -118,14 +131,22 @@ module.exports = function(app) {
 
     // get user by id or logged in user
     app.get('/user', function(req, res) {
-        if(sessionIsActive(req)) {
+        if(sessionIsActive(req) && (req.query.id || req.query.userName)) {
             requestValid = true;
-            var userId = (req.query.id === 'user') ? req.session.user.id : req.query.id;
-            var queryKey = userRepository.getUser(userId);
+
+            var queryKey = null;
+            if(req.query.id) {
+                var userId = (req.query.id === 'user') ? req.session.user.id : req.query.id;
+                queryKey = userRepository.getUser(userId);
+            }
+            // req.query.userName
+            else {
+                queryKey = userRepository.getUserByName(req.query.userName);
+            }
             responseHash[queryKey] = { res: res, req: req };
         }
         else {
-            res.send(404);
+            res.send(401);
         }
     });
 
@@ -142,10 +163,22 @@ module.exports = function(app) {
     });
 
     // get list of followers
-    app.get('/follow', function(req, res) {
+    app.get('/followers', function(req, res) {
         // this should only work if the user is logged in
         if(sessionIsActive(req)) {
             var queryKey = followRepository.getFollowersByUserId(req.query.id);
+            responseHash[queryKey] = { res: res, req: req };
+        }
+        else {
+            res.send(401);
+        }
+    });
+
+    // get list of following
+    app.get('/following', function(req, res) {
+        // this should only work if the user is logged in
+        if(sessionIsActive(req)) {
+            var queryKey = followRepository.getFollowingByUserId(req.query.id);
             responseHash[queryKey] = { res: res, req: req };
         }
         else {

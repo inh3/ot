@@ -25,6 +25,13 @@ userRepository.on('user-repo:response-end:get-user-login', function(queryKey, re
 });
 
 // listen for events
+userRepository.on('user-repo:response-end:get-user-by-name', function(queryKey, repoResult) {
+    console.log('');
+    console.log('queryId: ' + queryKey);
+    console.log(repoResult);
+});
+
+// listen for events
 userRepository.on('user-repo:response-end:add-user', function(queryKey, newUser) {
     console.log('');
     console.log('queryId: ' + queryKey);
@@ -49,6 +56,9 @@ userRepository.on('user-repo:response-end:remove-user', function(queryKey, newUs
 // get user
 userRepository.getUser(1);
 
+// get user by name
+userRepository.getUserByName('extra');
+
 // get user for login
 userRepository.getUserLogin('rita', 'test');
 
@@ -68,6 +78,7 @@ userRepository.removeUser(1234);
 
 // failures
 userRepository.getUser(12345);
+userRepository.getUserByName('xxxxxx');
 userRepository.getUserLogin('ritax', 'test');
 
 // disconnect

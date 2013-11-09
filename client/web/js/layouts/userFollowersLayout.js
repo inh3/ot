@@ -1,11 +1,9 @@
 define([    "collectionViews/userFollowersCollectionView",
-            "models/userModel",
             "vent",
             "handlebars",
             "templates/user-followers-layout",
             "marionette"],
 function(   UserFollowersCollectionView,
-            UserModel,
             EventAggregator,
             Handlebars) {
 
@@ -24,12 +22,12 @@ function(   UserFollowersCollectionView,
 
         initialize: function() {
             console.log("userFollowersLayout - initialize");
-            UserModel.getFollowers();
+            this.model.getFollowers();
         },
 
         onRender: function() {
             var userFollowersView = new UserFollowersCollectionView({
-                collection: UserModel.get('followers')
+                collection: this.model.get('followers')
             });
             this.contentRegion.show(userFollowersView);
             this.$el.removeClass('sign-up');

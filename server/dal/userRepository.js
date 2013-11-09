@@ -15,6 +15,7 @@ function UserRepository() {
 
     // prepared sql statements
     var getUser = this.mariaClient.prepare('CALL GetUser(:id)');
+    var getUserByName = this.mariaClient.prepare('CALL GetUserByName(:user_name)');
     var getUserLogin = this.mariaClient.prepare('CALL GetUserForLogin(:user_name, :password)');
 
     var insertUser = this.mariaClient.prepare(('CALL InsertUser(:user_name, :password, :email, :sound_byte)'));
@@ -52,6 +53,44 @@ function UserRepository() {
         dbQuery.on('end', function() {
             //console.log('[ user repo ] response end: ');
             self.emit('user-repo:response-end:get-user', queryKey, userResult);
+        });
+
+        // return query key to the caller
+        return queryKey;
+    };
+
+    // retrieve a user's information via name
+    this.getUserByName = function(userName) {
+        // user to return
+        var userResult = null;
+
+        // increment and return query key
+        var queryKey = this.generateQueryKey();
+
+        // perform the query
+        var dbQuery = this.mariaClient.query(getUserByName({
+            user_name: userName
+        }));
+
+        // response to query
+        dbQuery.on('result', function(dbResponse) {
+            dbResponse.on('row', function(responseRow) {
+                //console.log('Result row: ' + Inspect(responseRow));
+                userResult = responseRow;
+            });
+            dbResponse.on('error', function(responseError) {
+                console.log('[ user repo ] error: ' + Inspect(responseError));
+                self.emit('user-repo:result-error', responseError);
+            });
+            dbResponse.on('end', function(responseInfo) {
+                //console.log('Result finished: ' + Inspect(responseInfo));
+                self.emit('user-repo:result-end', responseInfo);
+            });
+        });
+        // end of response
+        dbQuery.on('end', function() {
+            //console.log('[ user repo ] response end: ');
+            self.emit('user-repo:response-end:get-user-by-name', queryKey, userResult);
         });
 
         // return query key to the caller

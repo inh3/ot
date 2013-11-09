@@ -1,9 +1,9 @@
-define([    "models/userModel",
-            "controllers/applicationController",
+define([    "controllers/applicationController",
+            "appUser",
             "vent",
             "marionette"],
-function(   UserModel,
-            ApplicationController,
+function(   ApplicationController,
+            AppUser,
             EventAggregator) {
 
     "use strict";
@@ -16,31 +16,25 @@ function(   UserModel,
 
         // controller handled routes
         appRoutes: {
-            "!/:user":              "userRoute",
+            "!/:user":              "userDefault",
             "!/:user/following":    "userFollowing",
             "!/:user/followers":    "userFollowers",
-            "*path":                "defaultRoute"
+            "*path":                "userLogin"
         },
 
         initialize: function() {
-            console.log("applicationRouter - initialize");
-
-            // listen for controller to set blank path
-            this.listenTo(EventAggregator, "controller:default-route", function() {
+            this.listenTo(EventAggregator, "controller:login", function() {
                 this.navigate('', { replace: true });
             });
 
-            // listen for controller to set blank path
-            this.listenTo(EventAggregator, "controller:user-active", function() {
-                this.navigate('!/' + UserModel.get('user_name'), { replace: true });
+            this.listenTo(EventAggregator, "controller:user-default", function() {
+                this.navigate('!/' + AppUser.get('user_name'), { replace: true });
             });
 
-            this.listenTo(UserModel, "user:login:success", function() {
-                this.navigate("!/" + UserModel.get("user_name"), { replace: true });
-            });
-
-            this.listenTo(UserModel, "user:get:success", function() {
-                this.navigate('!/' + UserModel.get('user_name'), { replace: true });
+            this.listenTo(EventAggregator, "user:login:complete", function(loginSuccess) {
+                if(loginSuccess === true) {
+                    this.navigate('!/' + AppUser.get('user_name'), { trigger: true, replace: true });
+                }
             });
         }
     });

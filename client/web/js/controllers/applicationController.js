@@ -1,9 +1,11 @@
 define([    "models/userModel",
+            "appUser",
             "vent",
             "cookie",
             "backbone",
             "marionette"],
 function(   UserModel,
+            AppUser,
             EventAggregator,
             Cookie,
             Backbone) {
@@ -12,50 +14,92 @@ function(   UserModel,
 
     // check if a session is active
     function sessionIsActive() {
-        if(Cookie.get('isActive') == 'yes') {
-            // don't need to get user if already has it
-            if(!UserModel.get('id')) {
-                UserModel.getUser('user');
-            }
-            return true;
-        }
-        return false;
+        return (Cookie.get('isActive') == 'yes');
     }
 
     return Backbone.Marionette.Controller.extend({
 
-        defaultRoute: function() {
-            console.log("applicationRouter - defaultRoute");
+        userLogin: function() {
+            console.log("applicationController - userLogin");
 
-            if(!sessionIsActive()) {
-                EventAggregator.trigger("controller:default-route");
+            var userPromise = new $.Deferred();
+            this.listenToOnce(EventAggregator, "user:get:complete", function(getStatus) {
+                getStatus === true ? userPromise.resolve() : userPromise.reject();
+            });
+            AppUser.getUser('user');
+
+            userPromise.done(function() {
+                EventAggregator.trigger("controller:user-default", AppUser);
+            });
+            userPromise.fail(function() {
+                EventAggregator.trigger("controller:login");
+            });
+        },
+
+        userDefault: function(userName) {
+            console.log("applicationController - userDefault");
+
+            var userPromise = new $.Deferred();
+            if(AppUser.get('user_name') !== userName) {
+                this.listenToOnce(EventAggregator, "user:get:complete", function(getStatus) {
+                    getStatus === true ? userPromise.resolve() : userPromise.reject();
+                });
+                AppUser.getUserByName(userName);
             }
             else {
-                EventAggregator.trigger("controller:user-active");
+                userPromise.resolve();
             }
+
+            userPromise.done(function() {
+                EventAggregator.trigger("controller:user-default", AppUser);
+            });
+            userPromise.fail(function() {
+                EventAggregator.trigger("controller:login");
+            });
         },
 
-        userRoute: function() {
-            console.log("applicationRouter - userRoute");
+        userFollowing: function(userName) {
+            console.log("applicationController - userFollowing");
 
-            if(!sessionIsActive()) {
-                EventAggregator.trigger("controller:default-route");
-            }
-        },
-
-        userFollowing: function() {
-            console.log("applicationRouter - userFollowing");
-        },
-
-        userFollowers: function() {
-            console.log("applicationRouter - userFollowers");
-
-            if(!sessionIsActive()) {
-                EventAggregator.trigger("controller:default-route");
+            var userPromise = new $.Deferred();
+            if(AppUser.get('user_name') !== userName) {
+                this.listenToOnce(EventAggregator, "user:get:complete", function(getStatus) {
+                    getStatus === true ? userPromise.resolve() : userPromise.reject();
+                });
+                AppUser.getUserByName(userName);
             }
             else {
-                EventAggregator.trigger("controller:user-followers");
+                userPromise.resolve();
             }
+
+            userPromise.done(function() {
+                EventAggregator.trigger("controller:user-following", AppUser);
+            });
+            userPromise.fail(function() {
+                EventAggregator.trigger("controller:login");
+            });
+        },
+
+        userFollowers: function(userName) {
+            console.log("applicationController - userFollowers");
+
+            var userPromise = new $.Deferred();
+            if(AppUser.get('user_name') !== userName) {
+                this.listenToOnce(EventAggregator, "user:get:complete", function(getStatus) {
+                    getStatus === true ? userPromise.resolve() : userPromise.reject();
+                });
+                AppUser.getUserByName(userName);
+            }
+            else {
+                userPromise.resolve();
+            }
+
+            userPromise.done(function() {
+                EventAggregator.trigger("controller:user-followers", AppUser);
+            });
+            userPromise.fail(function() {
+                EventAggregator.trigger("controller:login");
+            });
         }
     });
 });
