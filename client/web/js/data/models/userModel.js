@@ -1,9 +1,11 @@
 define([    "collections/tweetCollection",
+            "collections/followerCollection",
             "vent",
             "backbone",
             "underscore",
             "cookie"],
 function(   TweetCollection,
+            FollowerCollection,
             EventAggregator,
             Backbone,
             _) {
@@ -16,6 +18,9 @@ function(   TweetCollection,
 
             // create empty set of tweets
             this.set('tweets', new TweetCollection());
+
+            // create empty set of followers
+            this.set('followers', new FollowerCollection());
         },
 
         userLogin: function(userCredentials) {
@@ -94,7 +99,12 @@ function(   TweetCollection,
         getTweets: function() {
             // get tweets for the user
             this.get('tweets').fetchTweets(this.get('id'));
-        }
+        },
+
+        getFollowers: function() {
+            // get followers for the user
+            this.get('followers').fetchFollowers(this.get('id'));
+        },
     });
 
     return new UserModel();

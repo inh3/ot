@@ -14,11 +14,11 @@ function(   EventAggregator,
         template: Handlebars.templates["title-bar-layout.hbs"],
 
         initialize: function() {
-            console.log("titleBarLayout - initialize")
+            //console.log("titleBarLayout - initialize")
         },
 
         onShow: function() {
-            console.log("titleBarLayout - onShow");
+            //console.log("titleBarLayout - onShow");
         }
     });
 });

@@ -69,6 +69,20 @@ tweetRepository.on('tweet-repo:response-end:get-tweets-by-user-id', function(que
     delete responseHash[queryKey];
 });
 
+// FOLLOW REPOSITORY ---------------------------------------------------------------------------------------------------
+
+var FollowRepository = require(__dirname + '/dal/followRepository.js');
+var followRepository = new FollowRepository();
+followRepository.dbConnect();
+
+followRepository.on('follow-repo:response-end:get-followers-by-user-id', function(queryKey, userFollowers) {
+    // respond with follower information
+    responseHash[queryKey].res.send(userFollowers);
+
+    // remove query key from hashtable
+    delete responseHash[queryKey];
+});
+
 // MODULE DEFINITION ---------------------------------------------------------------------------------------------------
 
 module.exports = function(app) {
@@ -120,6 +134,18 @@ module.exports = function(app) {
         // this should only work if the user is logged in
         if(sessionIsActive(req)) {
             var queryKey = tweetRepository.getTweetsByUserId(req.query.id);
+            responseHash[queryKey] = { res: res, req: req };
+        }
+        else {
+            res.send(401);
+        }
+    });
+
+    // get list of followers
+    app.get('/follow', function(req, res) {
+        // this should only work if the user is logged in
+        if(sessionIsActive(req)) {
+            var queryKey = followRepository.getFollowersByUserId(req.query.id);
             responseHash[queryKey] = { res: res, req: req };
         }
         else {

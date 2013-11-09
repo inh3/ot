@@ -55,6 +55,11 @@ function(   LoginModel,
             this.signUpButtonClick = _.debounce(this.loginButtonClick, 1000, true);
         },
 
+        onRender: function() {
+            this.$el.addClass('sign-up');
+            this.$el.removeClass('hidden');
+        },
+
         onShow: function() {
             console.log("loginLayout - onShow");
         },

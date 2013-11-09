@@ -12,3 +12,7 @@
 div.container {
     padding-top: 60px;
 }
+
+li.bottom {
+    margin-bottom: 0;
+}

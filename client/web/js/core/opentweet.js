@@ -2,6 +2,7 @@ define([    "layouts/titleBarLayout",
             "layouts/sideBarNavLayout",
             "layouts/loginLayout",
             "layouts/userLayout",
+            "layouts/userFollowersLayout",
             "routers/applicationRouter",
             "backbone",
             "vent",
@@ -11,6 +12,7 @@ function(   TitleBarLayout,
             SideBarNavLayout,
             LoginLayout,
             UserLayout,
+            UserFollowersLayout,
             ApplicationRouter,
             Backbone,
             EventAggregator,
@@ -30,7 +32,7 @@ function(   TitleBarLayout,
 
     // configuration, setting up regions, etc ...
     OpenTweet.addInitializer(function(options) {
-        console.log("OpenTweet - addInitializer");
+        //console.log("OpenTweet - addInitializer");
 
         // attach main router and controller to application
         OpenTweet.appRouter = new ApplicationRouter();
@@ -42,12 +44,12 @@ function(   TitleBarLayout,
     });
 
     OpenTweet.on("initialize:before", function(options) {
-        console.log("OpenTweet - initialize:before");
+        //console.log("OpenTweet - initialize:before");
         options.moreData = "Application options..."
     });
 
     OpenTweet.on("initialize:after", function(options) {
-        console.log("OpenTweet - initialize:after");
+        //console.log("OpenTweet - initialize:after");
 
         if(Backbone.history) {
             Backbone.history.start();
@@ -62,31 +64,55 @@ function(   TitleBarLayout,
 
     OpenTweet.defaultRoute = function() {
 
-        // update regions and layouts
-        var sideBarNavLayout = new SideBarNavLayout();
+        // hide side-bar navigation
         $('#side-bar-nav').addClass('hidden');
-        OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
-        OpenTweet.sideBarNavRegion.show(sideBarNavLayout);
+        OpenTweet.sideBarNavRegion.reset();
 
         var loginLayout = new LoginLayout();
         OpenTweet.contentRegion.attachView(loginLayout);
         OpenTweet.contentRegion.show(loginLayout);
-        OpenTweet.contentRegion.$el.addClass('sign-up');
-        OpenTweet.contentRegion.$el.removeClass('hidden');
     };
 
     OpenTweet.userContent = function() {
+
+        // show side bar
+        var sideBarNavLayout = new SideBarNavLayout({
+            model: UserModel
+        });
+        $('#side-bar-nav').removeClass('hidden');
+        OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
+        OpenTweet.sideBarNavRegion.show(sideBarNavLayout);
 
         // show the user layout
         var userLayout = new UserLayout();
         OpenTweet.contentRegion.attachView(userLayout);
         OpenTweet.contentRegion.show(userLayout);
-        OpenTweet.contentRegion.$el.addClass('sign-up');
+    };
+
+    OpenTweet.userFollowing = function() {
+        // show side bar
+        var sideBarNavLayout = new SideBarNavLayout({
+            model: UserModel
+        });
+        $('#side-bar-nav').removeClass('hidden');
+        OpenTweet.sideBarNavRegion.attachView(sideBarNavLayout);
+        OpenTweet.sideBarNavRegion.show(sideBarNavLayout);
+
+        // show the followers tweet view
+        var userFollowers = new UserFollowersLayout();
+        OpenTweet.contentRegion.attachView(userFollowers);
+        OpenTweet.contentRegion.show(userFollowers);
+        OpenTweet.contentRegion.$el.removeClass('sign-up');
         OpenTweet.contentRegion.$el.removeClass('hidden');
     };
 
-    // router events
+    OpenTweet.userFollowers = function() {
+
+    };
+
+    // controller events
     OpenTweet.listenTo(EventAggregator, "controller:default-route", OpenTweet.defaultRoute);
+    OpenTweet.listenTo(EventAggregator, "controller:user-followers", OpenTweet.userFollowing);
 
     // login events
     OpenTweet.listenTo(UserModel, "user:login:success", OpenTweet.userContent);

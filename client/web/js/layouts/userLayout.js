@@ -32,6 +32,9 @@ function(   UserTweetsCollectionView,
                 collection: UserModel.get('tweets')
             });
             this.contentRegion.show(userTweetsView);
+
+            this.$el.removeClass('sign-up');
+            this.$el.removeClass('hidden');
         },
 
         onShow: function() {

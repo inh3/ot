@@ -17,9 +17,6 @@ function(   UserModel,
             if(!UserModel.get('id')) {
                 UserModel.getUser('user');
             }
-            else {
-                EventAggregator.trigger("controller:user-active");
-            }
             return true;
         }
         return false;
@@ -33,6 +30,9 @@ function(   UserModel,
             if(!sessionIsActive()) {
                 EventAggregator.trigger("controller:default-route");
             }
+            else {
+                EventAggregator.trigger("controller:user-active");
+            }
         },
 
         userRoute: function() {
@@ -40,6 +40,21 @@ function(   UserModel,
 
             if(!sessionIsActive()) {
                 EventAggregator.trigger("controller:default-route");
+            }
+        },
+
+        userFollowing: function() {
+            console.log("applicationRouter - userFollowing");
+        },
+
+        userFollowers: function() {
+            console.log("applicationRouter - userFollowers");
+
+            if(!sessionIsActive()) {
+                EventAggregator.trigger("controller:default-route");
+            }
+            else {
+                EventAggregator.trigger("controller:user-followers");
             }
         }
     });

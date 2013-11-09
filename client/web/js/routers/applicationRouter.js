@@ -16,8 +16,10 @@ function(   UserModel,
 
         // controller handled routes
         appRoutes: {
-            "!/:user":    "userRoute",
-            "*path":      "defaultRoute"
+            "!/:user":              "userRoute",
+            "!/:user/following":    "userFollowing",
+            "!/:user/followers":    "userFollowers",
+            "*path":                "defaultRoute"
         },
 
         initialize: function() {
