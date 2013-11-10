@@ -209,6 +209,8 @@ function(   TweetCollection,
             }).done(function () {
                     console.log("UserModel - makeTweet - Done");
                     EventAggregator.trigger('user:make-tweet:complete', true);
+                    self.get('tweets').add(tweetModel, { at: 0, silent: true });
+                    self.get('tweets').trigger("reset");
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
