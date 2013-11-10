@@ -10,6 +10,9 @@ var indexHtml = fs.readFileSync(__dirname + '/../client/web/static/html/index.ht
 // hash-table of responses
 var responseHash = {};
 
+// 20 minutes
+var sessionTimeoutMs = 60000 * 20;
+
 function sessionIsActive(httpRequest) {
 
     // there is a session and there is a user associated with it
@@ -32,7 +35,7 @@ userRepository.on('user-repo:response-end:get-user-login', function(queryKey, us
 
         // set active cookie
         responseHash[queryKey].res.cookie('isActive', 'yes', {
-            maxAge: 60000 * 5
+            maxAge: sessionTimeoutMs
         });
 
         // respond with user information
@@ -61,7 +64,7 @@ userRepository.on('user-repo:response-end:add-user', function(queryKey, newUser)
 
         // set active cookie
         responseHash[queryKey].res.cookie('isActive', 'yes', {
-            maxAge: 60000 * 5
+            maxAge: sessionTimeoutMs
         });
     }
 
@@ -202,12 +205,9 @@ module.exports = function(app, io) {
             req.session.touch();
 
             // send cookie flag to indicate a session is active
-            if(!req.cookies.isActive) {
-                console.log("* ACTIVE");
-                res.cookie('isActive', 'yes', {
-                    maxAge: 60000 * 5
-                });
-            }
+            res.cookie('isActive', 'yes', {
+                maxAge: sessionTimeoutMs
+            });
         }
         // remove client-side cookie if not authenticated
         else {
