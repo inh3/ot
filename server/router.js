@@ -160,12 +160,11 @@ module.exports = function(app) {
 
     // default path for debug
     app.get("/*", function(req, res, next) {
-        if(req.session !== undefined) {
-            //console.log(req.session);
-        }
-
-        // send cookie flag to indicate a session is active
         if(sessionIsActive(req)) {
+            // extend session on activity
+            req.session.touch();
+
+            // send cookie flag to indicate a session is active
             if(!req.cookies.isActive) {
                 console.log("* ACTIVE");
                 res.cookie('isActive', 'yes', {
@@ -173,7 +172,7 @@ module.exports = function(app) {
                 });
             }
         }
-        // remove cookie if not authenticated
+        // remove client-side cookie if not authenticated
         else {
             res.clearCookie('isActive');
         }
@@ -185,6 +184,12 @@ module.exports = function(app) {
     app.get('/login', function(req, res) {
         var queryKey = userRepository.getUserLogin(req.query.userName, req.query.password);
         responseHash[queryKey] = { res: res, req: req };
+    });
+
+    app.get('/signout', function(req, res) {
+        req.session.destroy();
+        res.clearCookie('isActive');
+        res.redirect('');
     });
 
     // get user by id or logged in user
