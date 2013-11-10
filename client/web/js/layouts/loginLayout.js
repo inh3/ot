@@ -35,7 +35,7 @@ function(   LoginModel,
         },
 
         initialize: function() {
-            console.log("loginLayout - initialize");
+            //console.log("loginLayout - initialize");
             this.loginModel = new LoginModel();
 
             // debounce the login buttons

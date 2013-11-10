@@ -32,7 +32,7 @@ function(   TweetItemView,
         },
 
         onClose: function() {
-            console.log("userTweetsCompositeView - onClose");
+            //console.log("userTweetsCompositeView - onClose");
             clearInterval(this.timeInterval);
         }
     });

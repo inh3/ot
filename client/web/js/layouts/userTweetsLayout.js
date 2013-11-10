@@ -19,7 +19,7 @@ function(   UserTweetsCompositeView,
         },
 
         onShow: function() {
-            console.log("userTweetsLayout - onShow");
+            //console.log("userTweetsLayout - onShow");
             var userTweetsView = new UserTweetsCompositeView({
                 collection: this.model.get('tweets')
             });

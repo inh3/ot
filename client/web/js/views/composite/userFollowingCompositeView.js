@@ -39,7 +39,7 @@ function(   UserItemView,
         },
 
         onClose: function() {
-            console.log("userFollowingCompositeView - onClose");
+            //console.log("userFollowingCompositeView - onClose");
         }
     });
 });

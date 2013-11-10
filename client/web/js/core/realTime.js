@@ -66,22 +66,22 @@ function(   AppUser,
 
     function RealTime() {
 
-        var socket = io.connect('http://192.168.1.135:80');
-        //var socket = io.connect('http://216.80.103.168:80');
+        //var socket = io.connect('http://192.168.1.135:80');
+        var socket = io.connect('http://216.80.103.168:80');
 
         socket.on('tweet', function (tweetData) {
             updateTweets(tweetData);
         });
 
         socket.on('addFollow', function (followData) {
-            console.log("* addFollow");
-            console.log(followData);
+            //console.log("* addFollow");
+            //console.log(followData);
             addFollow(followData);
         });
 
         socket.on('removeFollow', function (followData) {
-            console.log("* removeFollow");
-            console.log(followData);
+            //console.log("* removeFollow");
+            //console.log(followData);
             removeFollow(followData);
         });
     }

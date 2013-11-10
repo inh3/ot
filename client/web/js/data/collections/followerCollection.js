@@ -12,7 +12,7 @@ function(   EventAggregator,
         url: "/follow",
 
         fetchFollowers: function(userId) {
-            console.log("followerCollection - fetchFollowers");
+            //console.log("followerCollection - fetchFollowers");
 
             // store reference to self
             var self = this;
@@ -31,14 +31,14 @@ function(   EventAggregator,
                 data: { id: userId },
                 dataType: 'json'
             }).done(function () {
-                    console.log("followerCollection - fetchFollowers - Done");
+                    //console.log("followerCollection - fetchFollowers - Done");
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
-                    console.log("followerCollection - fetchFollowers - Error");
+                    //console.log("followerCollection - fetchFollowers - Error");
                 }
             }).always(function () {
-                console.log("followerCollection - fetchFollowers - Always");
+                //console.log("followerCollection - fetchFollowers - Always");
 
                 // remove reference to fetch request because it is done
                 delete self.followerRequest;

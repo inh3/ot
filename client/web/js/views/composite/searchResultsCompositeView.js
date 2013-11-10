@@ -60,7 +60,7 @@ function(   UserItemView,
         },
 
         onClose: function() {
-            console.log("searchResultsCompositeView - onClose");
+            //console.log("searchResultsCompositeView - onClose");
         }
     });
 });

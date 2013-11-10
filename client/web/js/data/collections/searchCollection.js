@@ -10,7 +10,7 @@ function(   EventAggregator,
         url: '/search',
 
         performQuery: function(queryString) {
-            console.log("SearchCollection - performQuery");
+            //console.log("SearchCollection - performQuery");
 
             // store reference to self
             var self = this;
@@ -27,12 +27,12 @@ function(   EventAggregator,
                 },
                 dataType: 'json'
             }).done(function () {
-                    console.log("SearchCollection - performQuery - Done");
+                    //console.log("SearchCollection - performQuery - Done");
                     EventAggregator.trigger('search:query:complete', true);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
-                    console.log("SearchCollection - performQuery - Error");
+                    //console.log("SearchCollection - performQuery - Error");
                     // error with 200 means no results
                     if(jqXhr.status === 200) {
                         EventAggregator.trigger('search:query:complete', true);
@@ -42,7 +42,7 @@ function(   EventAggregator,
                     }
                 }
             }).always(function () {
-                console.log("SearchCollection - performQuery - Always");
+                //console.log("SearchCollection - performQuery - Always");
 
                 // remove reference to fetch request because it is done
                 delete self.queryRequest;

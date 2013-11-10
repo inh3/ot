@@ -22,11 +22,11 @@ function(   Moment,
         },
 
         onClose: function() {
-            console.log("tweetItemView - onClose");
+            //console.log("tweetItemView - onClose");
         },
 
         onShow: function() {
-            console.log("tweetItemView - onShow");
+            //console.log("tweetItemView - onShow");
         },
 
         updateTimeStamp: function() {

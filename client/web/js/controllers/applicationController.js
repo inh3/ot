@@ -22,7 +22,7 @@ function(   UserModel,
     return Backbone.Marionette.Controller.extend({
 
         userLogin: function() {
-            console.log("applicationController - userLogin");
+            //console.log("applicationController - userLogin");
 
             var userPromise = new $.Deferred();
             this.listenToOnce(EventAggregator, "user:get:complete", function(getStatus) {
@@ -39,7 +39,7 @@ function(   UserModel,
         },
 
         userDefault: function(userName) {
-            console.log("applicationController - userDefault");
+            //console.log("applicationController - userDefault");
 
             var userPromise = new $.Deferred();
             if(AppUser.get('user_name') !== userName) {
@@ -63,7 +63,7 @@ function(   UserModel,
 
         userTweets: function(userName) {
 
-            console.log("applicationController - userTweets");
+            //console.log("applicationController - userTweets");
 
             var userPromise = new $.Deferred();
             if(AppUser.get('user_name') !== userName) {
@@ -86,7 +86,7 @@ function(   UserModel,
         },
 
         userFollowing: function(userName) {
-            console.log("applicationController - userFollowing");
+            //console.log("applicationController - userFollowing");
 
             var userPromise = new $.Deferred();
             if(AppUser.get('user_name') !== userName) {
@@ -109,7 +109,7 @@ function(   UserModel,
         },
 
         userFollowers: function(userName) {
-            console.log("applicationController - userFollowers");
+            //console.log("applicationController - userFollowers");
 
             var userPromise = new $.Deferred();
             if(AppUser.get('user_name') !== userName) {

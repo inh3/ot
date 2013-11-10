@@ -19,15 +19,15 @@ function(   SearchResultsCompositeView,
         },
 
         initialize: function() {
-            console.log("searchLayout - initialize");
+            //console.log("searchLayout - initialize");
         },
 
         onRender: function() {
-            console.log("searchLayout - onRender");
+            //console.log("searchLayout - onRender");
         },
 
         onShow: function() {
-            console.log("searchLayout - onShow");
+            //console.log("searchLayout - onShow");
             var searchModel = new Backbone.Model();
             searchModel.set('queryString', this.options.queryObject.queryString);
 

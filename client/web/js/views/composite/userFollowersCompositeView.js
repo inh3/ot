@@ -23,7 +23,7 @@ function(   UserItemView,
         //emptyView: SearchEmptyItemView,
 
         onClose: function() {
-            console.log("userFollowersCompositeView - onClose");
+            //console.log("userFollowersCompositeView - onClose");
         }
     });
 });

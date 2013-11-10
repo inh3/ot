@@ -19,7 +19,7 @@ function(   UserFollowingCompositeView,
         },
 
         onShow: function() {
-            console.log("userFollowingLayout - onShow");
+            //console.log("userFollowingLayout - onShow");
             var userFollowingView = new UserFollowingCompositeView({
                 collection: this.model.get('following')
             });

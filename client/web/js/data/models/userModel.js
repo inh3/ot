@@ -44,8 +44,8 @@ function(   TweetCollection,
         },
 
         userLogin: function(userCredentials) {
-            console.log("UserModel - userLogin");
-            console.log(userCredentials);
+            //console.log("UserModel - userLogin");
+            //console.log(userCredentials);
 
             // store reference to self
             var self = this;
@@ -64,16 +64,16 @@ function(   TweetCollection,
                 data: userCredentials,
                 dataType: 'json'
             }).done(function () {
-                    console.log("UserModel - userLogin - Done");
+                    //console.log("UserModel - userLogin - Done");
                     EventAggregator.trigger('user:login:complete', true);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
-                    console.log("UserModel - userLogin - Error");
+                    //console.log("UserModel - userLogin - Error");
                     EventAggregator.trigger('user:login:complete', false);
                 }
             }).always(function () {
-                console.log("UserModel - userLogin - Always");
+                //console.log("UserModel - userLogin - Always");
 
                 // remove reference to fetch request because it is done
                 delete self.loginRequest;
@@ -81,7 +81,7 @@ function(   TweetCollection,
         },
 
         addUser: function(userObject) {
-            console.log("UserModel - addUser");
+            //console.log("UserModel - addUser");
 
             // store reference to self
             var self = this;
@@ -101,16 +101,16 @@ function(   TweetCollection,
                 data: userObject,
                 dataType: 'json'
             }).done(function () {
-                console.log("UserModel - addUser - Done");
+                //console.log("UserModel - addUser - Done");
                 EventAggregator.trigger('user:add:complete', true);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
-                    console.log("UserModel - addUser - Error");
+                    //console.log("UserModel - addUser - Error");
                     EventAggregator.trigger('user:add:complete', false);
                 }
             }).always(function () {
-                console.log("UserModel - addUser - Always");
+                //console.log("UserModel - addUser - Always");
 
                 // remove reference to fetch request because it is done
                 delete self.addUserRequest;
@@ -118,7 +118,7 @@ function(   TweetCollection,
         },
 
         getUser: function(userId) {
-            console.log("UserModel - getUser");
+            //console.log("UserModel - getUser");
 
             // store reference to self
             var self = this;
@@ -138,16 +138,16 @@ function(   TweetCollection,
                 },
                 dataType: 'json'
             }).done(function () {
-                    console.log("UserModel - getUser - Done");
+                    //console.log("UserModel - getUser - Done");
                     EventAggregator.trigger('user:get:complete', true);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
-                    console.log("UserModel - getUser - Error");
+                    //console.log("UserModel - getUser - Error");
                     EventAggregator.trigger('user:get:complete', false);
                 }
             }).always(function () {
-                console.log("UserModel - getUser - Always");
+                //console.log("UserModel - getUser - Always");
 
                 // remove reference to fetch request because it is done
                 delete self.userRequest;
@@ -155,7 +155,7 @@ function(   TweetCollection,
         },
 
         getUserByName: function(userName) {
-            console.log("UserModel - getUserByName");
+            //console.log("UserModel - getUserByName");
 
             // store reference to self
             var self = this;
@@ -175,16 +175,16 @@ function(   TweetCollection,
                 },
                 dataType: 'json'
             }).done(function () {
-                    console.log("UserModel - getUserByName - Done");
+                    //console.log("UserModel - getUserByName - Done");
                     EventAggregator.trigger('user:get:complete', true);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
-                    console.log("UserModel - getUserByName - Error");
+                    //console.log("UserModel - getUserByName - Error");
                     EventAggregator.trigger('user:get:complete', false);
                 }
             }).always(function () {
-                console.log("UserModel - getUserByName - Always");
+                //console.log("UserModel - getUserByName - Always");
 
                 // remove reference to fetch request because it is done
                 delete self.userByNameRequest;
@@ -198,7 +198,7 @@ function(   TweetCollection,
 
         makeTweet: function(tweetText) {
 
-            console.log("UserModel - makeTweet");
+            //console.log("UserModel - makeTweet");
 
             // store reference to self
             var self = this;
@@ -219,18 +219,19 @@ function(   TweetCollection,
                 },
                 dataType: 'json'
             }).done(function () {
-                    console.log("UserModel - makeTweet - Done");
+                    //console.log("UserModel - makeTweet - Done");
                     EventAggregator.trigger('user:make-tweet:complete', true);
                     self.get('tweets').add(tweetModel, { at: 0, silent: true });
                     self.get('tweets').trigger("reset");
+                    //self.set('num_tweets', self.get('num_tweets') + 1);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
-                    console.log("UserModel - makeTweet - Error");
+                    //console.log("UserModel - makeTweet - Error");
                     EventAggregator.trigger('user:make-tweet:complete', false);
                 }
             }).always(function () {
-                console.log("UserModel - makeTweet - Always");
+                //console.log("UserModel - makeTweet - Always");
 
                 // remove reference to fetch request because it is done
                 delete self.makeTweetPost;
@@ -243,7 +244,7 @@ function(   TweetCollection,
         },
 
         removeFollower: function(followedUserId) {
-            console.log("UserModel - removeFollower");
+            //console.log("UserModel - removeFollower");
 
             // store reference to self
             var self = this;
@@ -263,7 +264,7 @@ function(   TweetCollection,
                 },
                 dataType: 'json'
             }).done(function () {
-                console.log("UserModel - removeFollower - Done");
+                //console.log("UserModel - removeFollower - Done");
                 // remove the user locally
                 var unfollowedUserModel = self.get('following').where({ id: followModel.get('followed_user_id') });
                 if(unfollowedUserModel.length > 0) {
@@ -275,10 +276,10 @@ function(   TweetCollection,
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
-                    console.log("UserModel - removeFollower - Error");
+                    //console.log("UserModel - removeFollower - Error");
                 }
             }).always(function () {
-                console.log("UserModel - removeFollower - Always");
+                //console.log("UserModel - removeFollower - Always");
 
                 // remove reference to fetch request because it is done
                 delete self.removeFollowerPost;
@@ -286,7 +287,7 @@ function(   TweetCollection,
         },
 
         addFollower: function(followedUserId) {
-            console.log("UserModel - addFollower");
+            //console.log("UserModel - addFollower");
 
             // store reference to self
             var self = this;
@@ -307,15 +308,15 @@ function(   TweetCollection,
                 },
                 dataType: 'json'
             }).done(function () {
-                    console.log("UserModel - addFollower - Done");
+                    //console.log("UserModel - addFollower - Done");
                     self.set('num_follows', self.get('num_follows') + 1);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
-                    console.log("UserModel - addFollower - Error");
+                    //console.log("UserModel - addFollower - Error");
                 }
             }).always(function () {
-                console.log("UserModel - addFollower - Always");
+                //console.log("UserModel - addFollower - Always");
 
                 // remove reference to fetch request because it is done
                 delete self.addFollowerPost;

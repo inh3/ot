@@ -12,7 +12,7 @@ function(   EventAggregator,
         url: "/tweets",
 
         fetchTweets: function(userId) {
-            console.log("tweetCollection - fetchTweets");
+            //console.log("tweetCollection - fetchTweets");
 
             // store reference to self
             var self = this;
@@ -31,14 +31,14 @@ function(   EventAggregator,
                 data: { id: userId },
                 dataType: 'json'
             }).done(function () {
-                console.log("tweetCollection - fetchTweets - Done");
+                //console.log("tweetCollection - fetchTweets - Done");
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
-                    console.log("tweetCollection - fetchTweets - Error");
+                    //console.log("tweetCollection - fetchTweets - Error");
                 }
             }).always(function () {
-                console.log("tweetCollection - fetchTweets - Always");
+                //console.log("tweetCollection - fetchTweets - Always");
 
                 // remove reference to fetch request because it is done
                 delete self.tweetRequest;
@@ -46,7 +46,7 @@ function(   EventAggregator,
         },
 
         fetchFollowedTweets: function(userId) {
-            console.log("tweetCollection - fetchFollowedTweets");
+            //console.log("tweetCollection - fetchFollowedTweets");
 
             // store reference to self
             var self = this;
@@ -68,14 +68,14 @@ function(   EventAggregator,
                 },
                 dataType: 'json'
             }).done(function () {
-                    console.log("tweetCollection - fetchFollowedTweets - Done");
+                    //console.log("tweetCollection - fetchFollowedTweets - Done");
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
-                    console.log("tweetCollection - fetchFollowedTweets - Error");
+                    //console.log("tweetCollection - fetchFollowedTweets - Error");
                 }
             }).always(function () {
-                console.log("tweetCollection - fetchFollowedTweets - Always");
+                //console.log("tweetCollection - fetchFollowedTweets - Always");
 
                 // remove reference to fetch request because it is done
                 delete self.tweetRequest;
