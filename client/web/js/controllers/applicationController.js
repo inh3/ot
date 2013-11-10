@@ -50,11 +50,12 @@ function(   UserModel,
                 userPromise.resolve();
             }
 
+            var self = this;
             userPromise.done(function() {
                 EventAggregator.trigger("controller:user-default", AppUser);
             });
             userPromise.fail(function() {
-                EventAggregator.trigger("controller:login");
+                self.userLogin();
             });
         },
 
@@ -73,11 +74,12 @@ function(   UserModel,
                 userPromise.resolve();
             }
 
+            var self = this;
             userPromise.done(function() {
                 EventAggregator.trigger("controller:user-tweets", AppUser);
             });
             userPromise.fail(function() {
-                EventAggregator.trigger("controller:login");
+                self.userLogin();
             });
         },
 
@@ -95,11 +97,12 @@ function(   UserModel,
                 userPromise.resolve();
             }
 
+            var self = this;
             userPromise.done(function() {
                 EventAggregator.trigger("controller:user-following", AppUser);
             });
             userPromise.fail(function() {
-                EventAggregator.trigger("controller:login");
+                self.userLogin();
             });
         },
 
@@ -117,11 +120,12 @@ function(   UserModel,
                 userPromise.resolve();
             }
 
+            var self = this;
             userPromise.done(function() {
                 EventAggregator.trigger("controller:user-followers", AppUser);
             });
             userPromise.fail(function() {
-                EventAggregator.trigger("controller:login");
+                self.userLogin();
             });
         }
     });

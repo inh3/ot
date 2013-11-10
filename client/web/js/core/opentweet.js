@@ -102,7 +102,7 @@ function(   NavigationBarLayout,
         AppUser.get('tweets').reset();
         AppUser.getTweets();
         OpenTweet.contentRegion.show(this.userTweetsLayout);
-        if(selectTweets) {
+        if(selectTweets === true) {
             OpenTweet.appRouter.navigate('!/' + AppUser.get('user_name'), { replace: true });
             this.sideBarLayout.selectTweets();
         }
