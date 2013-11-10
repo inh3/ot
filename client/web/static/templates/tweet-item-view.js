@@ -10,8 +10,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
 
   buffer += "<div class=\"media\">\n    <div class=\"pull-right\">\n        <div class=\"media-object\">";
-  if (stack1 = helpers.timestamp) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.timestamp; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (stack1 = helpers.displayTime) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.displayTime; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "</div>\n    </div>\n    <div class=\"media-body tweet-body\">\n        <a href=\"#!/";
   if (stack1 = helpers.user_name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -21,11 +21,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (stack1 = helpers.user_name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.user_name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</strong></a>\n        ";
+    + "</strong></a>\n    </div>\n    ";
   if (stack1 = helpers.message) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.message; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "\n    </div>\n</div>";
+    + "\n</div>";
   return buffer;
   });
 

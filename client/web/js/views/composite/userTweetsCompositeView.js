@@ -22,8 +22,18 @@ function(   TweetItemView,
         // view for empty collection
         //emptyView: SearchEmptyItemView,
 
+        onRender: function() {
+            var self = this;
+            this.timeInterval = setInterval(function() {
+                self.collection.forEach(function(model) {
+                    self.children.findByModel(model).updateTimeStamp();
+                });
+            }, 1000);
+        },
+
         onClose: function() {
             console.log("userTweetsCompositeView - onClose");
+            clearInterval(this.timeInterval);
         }
     });
 });

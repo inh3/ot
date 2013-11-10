@@ -70,7 +70,10 @@ require.config({
         templates:          "./../templates",
 
         // socket.io
-        socketio:           "./../lib/socketio/socket.io.min"
+        socketio:           "./../lib/socketio/socket.io.min",
+
+        // moment
+        moment:             "./../lib/moment/moment.min"
     },
     // support for non-amd libraries
     shim: {
@@ -100,6 +103,9 @@ require.config({
         },
         socketio: {
             exports:        'io'
+        },
+        moment: {
+            exports:        'moment'
         }
     }
 });
