@@ -63,7 +63,7 @@ function(   SignUpModel,
             }
         },
         signUpButtonClick: function() {
-            console.log("loginLayout - signUpButtonClick");
+            AppUser.addUser(this.signUpModel.toJSON());
         }
     });
 });

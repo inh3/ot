@@ -68,6 +68,43 @@ function(   TweetCollection,
             });
         },
 
+        addUser: function(userObject) {
+            console.log("UserModel - addUser");
+
+            // store reference to self
+            var self = this;
+
+            // cancel previous fetch if it exists
+            if (this.addUserRequest !== undefined) {
+                this.addUserRequest.abort();
+            }
+
+            // set url for login
+            this.url = '/user';
+
+            // fetch new data (reset collection on result)
+            this.addUserRequest = this.fetch({
+                type: 'POST',
+                reset: true,
+                data: userObject,
+                dataType: 'json'
+            }).done(function () {
+                console.log("UserModel - addUser - Done");
+                EventAggregator.trigger('user:add:complete', true);
+            }).fail(function (jqXhr) {
+                // don't trigger error if abort
+                if (jqXhr.statusText !== "abort") {
+                    console.log("UserModel - addUser - Error");
+                    EventAggregator.trigger('user:add:complete', false);
+                }
+            }).always(function () {
+                console.log("UserModel - addUser - Always");
+
+                // remove reference to fetch request because it is done
+                delete self.addUserRequest;
+            });
+        },
+
         getUser: function(userId) {
             console.log("UserModel - getUser");
 

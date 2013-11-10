@@ -164,6 +164,13 @@ function(   NavigationBarLayout,
         }
     });
 
+    // add user complete event
+    OpenTweet.listenTo(EventAggregator, "user:add:complete", function(addSuccess) {
+        if(addSuccess == true) {
+            OpenTweet.navigationBarLayout.showQuery();
+        }
+    });
+
     // export the app from this module
     return OpenTweet;
 });

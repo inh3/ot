@@ -39,6 +39,12 @@ function(   ApplicationController,
                 }
             });
 
+            this.listenTo(EventAggregator, "user:add:complete", function(loginSuccess) {
+                if(loginSuccess === true) {
+                    this.navigate('!/' + AppUser.get('user_name'), { trigger: true, replace: true });
+                }
+            });
+
             this.listenTo(EventAggregator, "nav-bar-layout:query", function(queryString) {
                 this.navigate('!/search/' + queryString, { trigger: true, replace: true });
             });

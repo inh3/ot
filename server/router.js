@@ -51,6 +51,28 @@ userRepository.on('user-repo:response-end:get-user-login', function(queryKey, us
 });
 
 // listen for events
+userRepository.on('user-repo:response-end:add-user', function(queryKey, newUser) {
+    // if user is entered setup session auth
+    if(newUser) {
+        newUser.authId = newUser.id;
+
+        // set session to indicate logged in
+        responseHash[queryKey].req.session.user = newUser;
+
+        // set active cookie
+        responseHash[queryKey].res.cookie('isActive', 'yes', {
+            maxAge: 60000 * 5
+        });
+    }
+
+    // respond with user information
+    responseHash[queryKey].res.send(newUser);
+
+    // remove query key from hashtable
+    delete responseHash[queryKey];
+});
+
+// listen for events
 userRepository.on('user-repo:response-end:get-user', function(queryKey, userObject) {
     if(userObject) {
         if(userObject.id == responseHash[queryKey].req.session.user.id) {
@@ -206,6 +228,23 @@ module.exports = function(app) {
             else {
                 queryKey = userRepository.getUserByName(req.query.userName);
             }
+            responseHash[queryKey] = { res: res, req: req };
+        }
+        else {
+            res.send(401);
+        }
+    });
+
+    app.post('/user', function(req, res) {
+
+        // this should only happen if user is not auth'd
+        if(!sessionIsActive(req)) {
+            var queryKey = userRepository.addUser({
+                userName: req.body.userName,
+                userPass: req.body.password,
+                emailAddress: req.body.email,
+                soundByte: req.body.soundByte
+            });
             responseHash[queryKey] = { res: res, req: req };
         }
         else {
