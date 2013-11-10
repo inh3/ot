@@ -4,12 +4,26 @@ function(   AppUser,
             io) {
 
     function updateTweets(tweetData) {
+
+        var addedTweet = false;
         if(AppUser.get('followedTweets')) {
             var foundUserByTweet = AppUser.get('followedTweets').findWhere( {
                 user_name: tweetData.user_name
             });
 
             if(foundUserByTweet) {
+                addedTweet = true;
+                AppUser.get('followedTweets').add(tweetData, { at: 0, silent: true });
+                AppUser.get('followedTweets').trigger("reset");
+            }
+        }
+
+        if(addedTweet === false && AppUser.get('following')) {
+            var foundFollowingUser = AppUser.get('following').findWhere( {
+                id: tweetData.user_id
+            });
+
+            if(foundFollowingUser) {
                 AppUser.get('followedTweets').add(tweetData, { at: 0, silent: true });
                 AppUser.get('followedTweets').trigger("reset");
             }
