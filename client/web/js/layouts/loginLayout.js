@@ -1,5 +1,4 @@
 define([    "models/loginModel",
-            "models/signUpModel",
             "appUser",
             "vent",
             "underscore",
@@ -7,7 +6,6 @@ define([    "models/loginModel",
             "templates/login-layout",
             "marionette"],
 function(   LoginModel,
-            SignUpModel,
             AppUser,
             EventAggregator,
             _,
@@ -25,13 +23,7 @@ function(   LoginModel,
         ui: {
             userNameLogin:      "#login-user-name",
             passwordLogin:      "#login-password",
-            loginButton:        "#login-button",
-
-            userNameSignUp:     "#username-sign-up",
-            passwordSignUp:     "#password-sign-up",
-            emailSignUp:        "#email-sign-up",
-            soundByteSignUp:    "#sound-byte-sign-up",
-            signUpButton:       "#sign-up-button"
+            loginButton:        "#login-button"
         },
 
         events: {

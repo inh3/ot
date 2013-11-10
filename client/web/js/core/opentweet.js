@@ -1,6 +1,6 @@
 define([    "layouts/navigationBarLayout",
             "layouts/sideBarLayout",
-            "layouts/loginLayout",
+            "layouts/landingPageLayout",
             "layouts/userLayout",
             "layouts/userTweetsLayout",
             "layouts/userFollowersLayout",
@@ -13,7 +13,7 @@ define([    "layouts/navigationBarLayout",
             "marionette"],
 function(   NavigationBarLayout,
             SideBarLayout,
-            LoginLayout,
+            LandingPageLayout,
             UserDefaultLayout,
             UserTweetsLayout,
             UserFollowersLayout,
@@ -59,7 +59,7 @@ function(   NavigationBarLayout,
         OpenTweet.sideBarRegion.show(this.sideBarLayout);
 
         // create other views
-        this.loginLayout = new LoginLayout();
+        this.landingPageLayout = new LandingPageLayout();
         this.userDefaultLayout = new UserDefaultLayout({ model: AppUser });
         this.userTweetsLayout = new UserTweetsLayout({ model: AppUser });
         this.userFollowersLayout = new UserFollowersLayout({ model: AppUser });
@@ -77,7 +77,7 @@ function(   NavigationBarLayout,
         // hide side-bar navigation
         $('#side-bar').addClass('hidden');
 
-        OpenTweet.contentRegion.show(this.loginLayout);
+        OpenTweet.contentRegion.show(this.landingPageLayout);
     };
 
     OpenTweet.userDefault = function() {

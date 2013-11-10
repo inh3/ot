@@ -23,8 +23,14 @@ module.exports = function(grunt) {
                     // side bar
                     "client/web/static/templates/side-bar-layout.js":                   "client/web/js/templates/side-bar-layout.hbs",
 
+                    // landing page
+                    "client/web/static/templates/landing-page-layout.js":               "client/web/js/templates/landing-page-layout.hbs",
+
                     // login
                     "client/web/static/templates/login-layout.js":                      "client/web/js/templates/login-layout.hbs",
+
+                    // sign-up
+                    "client/web/static/templates/new-user-layout.js":                   "client/web/js/templates/new-user-layout.hbs",
 
                     // user
                     "client/web/static/templates/user-layout.js":                       "client/web/js/templates/user-layout.hbs",
