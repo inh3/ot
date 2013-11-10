@@ -12,7 +12,7 @@ BEGIN
     
     IF userId IS NULL THEN
         INSERT INTO Users ( user_name, password, email, sound_byte, num_tweets, num_follows, num_followers, join_date )
-        VALUES ( userName, SHA2(userPass, 256), emailAddress, soundByte, 0, 0, 0, NOW() );
+        VALUES ( userName, SHA2(userPass, 256), emailAddress, soundByte, 0, 0, 0, UTC_TIMESTAMP() );
         
         SELECT id, user_name, email, sound_byte, num_tweets, num_follows, num_followers FROM Users WHERE id = LAST_INSERT_ID();
     END IF;

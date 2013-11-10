@@ -13,7 +13,7 @@ BEGIN
 
     IF tweetUserId IS NOT NULL THEN
         INSERT INTO Tweets ( user_id, user_name, message, timestamp )
-        VALUES ( tweetUserId, tweetUserName, tweetMessage, NOW() );
+        VALUES ( tweetUserId, tweetUserName, tweetMessage, UTC_TIMESTAMP() );
         
         UPDATE Users SET num_tweets = num_tweets + 1 WHERE id = tweetUserId;
 
