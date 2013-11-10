@@ -11,8 +11,6 @@ function(   UserFollowersCompositeView,
 
     return Backbone.Marionette.Layout.extend({
 
-        el: '#content',
-
         template: Handlebars.templates["user-followers-layout.hbs"],
 
         regions: {
@@ -28,6 +26,7 @@ function(   UserFollowersCompositeView,
         },
 
         onRender: function() {
+            this.model.get('followers').reset();
             this.model.getFollowers();
             var userFollowersView = new UserFollowersCompositeView({
                 collection: this.model.get('followers')

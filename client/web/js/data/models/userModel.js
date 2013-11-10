@@ -50,6 +50,7 @@ function(   TweetCollection,
                 dataType: 'json'
             }).done(function () {
                     console.log("UserModel - userLogin - Done");
+                    self.set('authId', self.get('id'));
                     EventAggregator.trigger('user:login:complete', true);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
@@ -144,6 +145,46 @@ function(   TweetCollection,
         getTweets: function() {
             // get tweets for the user
             this.get('tweets').fetchTweets(this.get('id'));
+        },
+
+        makeTweet: function(tweetText) {
+
+            console.log("UserModel - makeTweet");
+
+            // store reference to self
+            var self = this;
+
+            // cancel previous fetch if it exists
+            if (this.makeTweetPost !== undefined) {
+                this.makeTweetPost.abort();
+            }
+
+            // fetch new data (reset collection on result)
+            var tweetModel = new Backbone.Model();
+            tweetModel.url = '/tweet';
+            this.makeTweetPost = tweetModel.fetch({
+                type: 'POST',
+                reset: true,
+                data: {
+                    userId: this.get('id'),
+                    tweetText: tweetText
+                },
+                dataType: 'json'
+            }).done(function () {
+                    console.log("UserModel - makeTweet - Done");
+                    EventAggregator.trigger('user:make-tweet:complete', true);
+            }).fail(function (jqXhr) {
+                // don't trigger error if abort
+                if (jqXhr.statusText !== "abort") {
+                    console.log("UserModel - makeTweet - Error");
+                    EventAggregator.trigger('user:make-tweet:complete', false);
+                }
+            }).always(function () {
+                console.log("UserModel - makeTweet - Always");
+
+                // remove reference to fetch request because it is done
+                delete self.makeTweetPost;
+            });
         },
 
         getFollowers: function() {

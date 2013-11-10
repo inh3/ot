@@ -74,6 +74,14 @@ tweetRepository.on('tweet-repo:response-end:get-tweets-by-user-id', function(que
     delete responseHash[queryKey];
 });
 
+tweetRepository.on('tweet-repo:response-end:add-tweet', function(queryKey, addedTweet) {
+    // respond with follower information
+    responseHash[queryKey].res.send(addedTweet);
+
+    // remove query key from hashtable
+    delete responseHash[queryKey];
+});
+
 // FOLLOW REPOSITORY ---------------------------------------------------------------------------------------------------
 
 var FollowRepository = require(__dirname + '/dal/followRepository.js');
@@ -143,6 +151,17 @@ module.exports = function(app) {
             else {
                 queryKey = userRepository.getUserByName(req.query.userName);
             }
+            responseHash[queryKey] = { res: res, req: req };
+        }
+        else {
+            res.send(401);
+        }
+    });
+
+    app.post('/tweet', function(req, res) {
+        // this should only work if the user is logged in
+        if(sessionIsActive(req) && req.body.tweetText && req.body.userId === req.session.user.id) {
+            var queryKey = tweetRepository.addTweet(req.session.user.id, req.body.tweetText);
             responseHash[queryKey] = { res: res, req: req };
         }
         else {

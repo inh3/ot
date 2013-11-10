@@ -1,18 +1,18 @@
-define([    "vent",
+define([    "appUser",
+            "vent",
             "handlebars",
-            "underscore",
             "templates/side-bar-layout",
             "marionette"],
-function(   EventAggregator,
-            Handlebars,
-            _) {
+function(   AppUser,
+            EventAggregator,
+            Handlebars) {
 
     "use strict";
 
     return Backbone.Marionette.Layout.extend({
 
         tagName: "div",
-        className: "panel panel-default",
+        className: "list-group",
 
         template: Handlebars.templates["side-bar-layout.hbs"],
 
@@ -20,18 +20,21 @@ function(   EventAggregator,
             "click #side-bar-heading":      "listItemClick",
             "click #user-tweets-item":      "listItemClick",
             "click #user-followers-item":   "listItemClick",
-            "click #user-following-item":   "listItemClick"
+            "click #user-following-item":   "listItemClick",
+
+            "keyup #tweet-text":            "tweetKeyPress",
+            "click #tweet-button":          "tweetClick"
+        },
+
+        ui: {
+            tweetText:                      "#tweet-text",
+            tweetCharCount:                 "#tweet-characters",
+            tweetButton:                    "#tweet-button"
         },
 
         initialize: function() {
-            console.log("sideBarNavLayout - initialize");
-
             // listen for model changes
             this.listenTo(this.model, "change", this.render);
-        },
-
-        onShow: function() {
-            console.log("sideBarNavLayout - onShow");
         },
 
         listItemClick: function(eventTarget) {
@@ -45,6 +48,37 @@ function(   EventAggregator,
             if($elTarget.attr('id') != 'side-bar-heading') {
                 $elTarget.addClass('active');
             }
+        },
+
+        tweetKeyPress: function() {
+            var charCount = this.ui.tweetText.val().trim().length;
+            if(charCount > 140 || charCount < 0) {
+                this.ui.tweetButton.attr('disabled', '');
+                this.ui.tweetCharCount.html('<span class="text-danger"><strong> ' + charCount + '/ 140</strong></span>');
+            }
+            else {
+                this.ui.tweetButton.removeAttr('disabled');
+                this.ui.tweetCharCount.html(charCount + ' / 140');
+            }
+        },
+
+        tweetClick: function() {
+            this.ui.tweetText.attr('disabled', '');
+            this.ui.tweetButton.attr('disabled', '');
+
+            var tweetDeferral = new $.Deferred();
+            this.listenToOnce(EventAggregator, "user:make-tweet:complete", function(getStatus) {
+                    tweetDeferral.resolve();
+            });
+            AppUser.makeTweet(this.ui.tweetText.val());
+
+            var self = this;
+            tweetDeferral.done(function() {
+                self.ui.tweetText.val('');
+                self.ui.tweetCharCount.html('0 / 140');
+                self.ui.tweetText.removeAttr('disabled');
+                self.ui.tweetButton.removeAttr('disabled');
+            });
         }
     });
 });

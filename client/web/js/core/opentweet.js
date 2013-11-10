@@ -22,6 +22,15 @@ function(   NavigationBarLayout,
 
     "use strict";
 
+    function showTweetText() {
+        if(AppUser.get('authId') == AppUser.get('id')) {
+            AppUser.set('showTweetText', true);
+        }
+        else {
+            AppUser.set('showTweetText', false);
+        }
+    }
+
     // set up the app instance
     var OpenTweet = new Backbone.Marionette.Application();
 
@@ -71,6 +80,7 @@ function(   NavigationBarLayout,
 
         // hide side-bar navigation
         $('#side-bar').addClass('hidden');
+
         OpenTweet.contentRegion.show(this.loginLayout);
     };
 
@@ -78,7 +88,7 @@ function(   NavigationBarLayout,
         $('#side-bar').removeClass('hidden');
 
         // show the user layout
-        OpenTweet.contentRegion.attachView(this.userTweetsLayout);
+        showTweetText();
         OpenTweet.contentRegion.show(this.userTweetsLayout);
     };
 
@@ -86,7 +96,7 @@ function(   NavigationBarLayout,
         $('#side-bar').removeClass('hidden');
 
         // show the followers tweet view
-        OpenTweet.contentRegion.attachView(this.userFollowers);
+        showTweetText();
         OpenTweet.contentRegion.show(this.userFollowers);
     };
 
@@ -94,7 +104,7 @@ function(   NavigationBarLayout,
         $('#side-bar').removeClass('hidden');
 
         // show the followers tweet view
-        OpenTweet.contentRegion.attachView(this.userFollowing);
+        showTweetText();
         OpenTweet.contentRegion.show(this.userFollowing);
     };
 

@@ -11,8 +11,6 @@ function(   UserTweetsCompositeView,
 
     return Backbone.Marionette.Layout.extend({
 
-        el: '#content',
-
         template: Handlebars.templates["user-tweets-layout.hbs"],
 
         regions: {
@@ -28,8 +26,8 @@ function(   UserTweetsCompositeView,
         },
 
         onRender: function() {
+            this.model.get('tweets').reset();
             this.model.getTweets();
-
             var userTweetsView = new UserTweetsCompositeView({
                 collection: this.model.get('tweets')
             });

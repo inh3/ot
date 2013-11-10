@@ -1,6 +1,16 @@
-<div class="panel-heading"><a id="side-bar-heading" href="#!/{{user_name}}"><h3>{{user_name}}</h3></a></div>
-<div class="list-group">
-    <a id="user-tweets-item" href="#!/{{user_name}}/tweets" class="list-group-item">Tweets</a>
-    <a id="user-followers-item" href="#!/{{user_name}}/followers" class="list-group-item">Followers</a>
-    <a id="user-following-item" href="#!/{{user_name}}/following" class="list-group-item">Following</a>
+<a id="user-tweets-item" href="#!/{{user_name}}/tweets" class="list-group-item">Tweets</a>
+<a id="user-followers-item" href="#!/{{user_name}}/followers" class="list-group-item">Followers</a>
+<a id="user-following-item" href="#!/{{user_name}}/following" class="list-group-item">Following</a>
+{{#if showTweetText}}
+<div id="tweet-entry" class="list-group-item">
+    <textarea id="tweet-text" class="form-control" rows="7" maxlength="140"/>
+    <div>
+        <div class="vertical-align">
+            <button id="tweet-button" type="button" class="btn btn-default" disabled="disabled">Tweet</button>
+        </div>
+        <div class="vertical-align tweet-char-count">
+            <span id="tweet-characters">0 / 140</span>
+        </div>
+    </div>
 </div>
+{{/if}}
