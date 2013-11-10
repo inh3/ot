@@ -80,6 +80,7 @@ function(   NavigationBarLayout,
 
     OpenTweet.userDefault = function() {
         $('#side-bar').removeClass('hidden');
+        OpenTweet.navigationBarLayout.showQuery();
 
         // show the default user layout
         if(AppUser.get('authId') == AppUser.get('id')) {
@@ -94,38 +95,43 @@ function(   NavigationBarLayout,
         }
     };
 
-    OpenTweet.userTweets = function(selectTweets) {
+    OpenTweet.userTweets = function(updateRoute) {
         $('#side-bar').removeClass('hidden');
+        OpenTweet.navigationBarLayout.showQuery();
 
         // show the user tweet layout
         showTweetText();
         AppUser.get('tweets').reset();
         AppUser.getTweets();
         OpenTweet.contentRegion.show(this.userTweetsLayout);
-        if(selectTweets === true) {
+        this.sideBarLayout.selectTweets();
+        if(updateRoute === true) {
             OpenTweet.appRouter.navigate('!/' + AppUser.get('user_name'), { replace: true });
-            this.sideBarLayout.selectTweets();
         }
     };
 
     OpenTweet.userFollowers = function() {
         $('#side-bar').removeClass('hidden');
+        OpenTweet.navigationBarLayout.showQuery();
 
         // show the followers tweet view
         showTweetText();
         AppUser.get('followers').reset();
         AppUser.getFollowers();
         OpenTweet.contentRegion.show(this.userFollowersLayout);
+        this.sideBarLayout.selectFollowers();
     };
 
     OpenTweet.userFollowing = function() {
         $('#side-bar').removeClass('hidden');
+        OpenTweet.navigationBarLayout.showQuery();
 
         // show the followers tweet view
         showTweetText();
         AppUser.get('following').reset();
         AppUser.getFollowing();
         OpenTweet.contentRegion.show(this.userFollowingLayout);
+        this.sideBarLayout.selectFollowing();
     };
 
     // controller events

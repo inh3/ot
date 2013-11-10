@@ -32,7 +32,7 @@ function(   AppUser,
             tweetButton:                    "#tweet-button"
         },
 
-        onBeforeRender: function() {
+        initialize: function() {
             // listen for model changes
             this.listenTo(this.model, "change", this.render);
         },
@@ -89,7 +89,16 @@ function(   AppUser,
         },
 
         selectTweets: function() {
+            this.removeSelect();
             this.$el.find('#user-tweets-item').addClass('active');
+        },
+        selectFollowers: function() {
+            this.removeSelect();
+            this.$el.find('#user-followers-item').addClass('active');
+        },
+        selectFollowing: function() {
+            this.removeSelect();
+            this.$el.find('#user-following-item').addClass('active');
         }
     });
 });

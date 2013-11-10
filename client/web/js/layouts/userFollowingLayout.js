@@ -22,20 +22,16 @@ function(   UserFollowingCompositeView,
             console.log("userFollowingLayout - initialize");
         },
 
-        onBeforeRender: function() {
-            // listen for model changes
-            this.listenTo(this.model, "change", this.render);
-        },
-
         onRender: function() {
-            var userFollowingView = new UserFollowingCompositeView({
-                collection: this.model.get('following')
-            });
-            this.contentRegion.show(userFollowingView);
+            console.log("userFollowingLayout - onRender");
         },
 
         onShow: function() {
             console.log("userFollowingLayout - onShow");
+            var userFollowingView = new UserFollowingCompositeView({
+                collection: this.model.get('following')
+            });
+            this.contentRegion.show(userFollowingView);
         }
     });
 });

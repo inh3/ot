@@ -22,20 +22,16 @@ function(   UserFollowersCompositeView,
             console.log("userFollowersLayout - initialize");
         },
 
-        onBeforeRender: function() {
-            // listen for model changes
-            this.listenTo(this.model, "change", this.render);
-        },
-
         onRender: function() {
-            var userFollowersView = new UserFollowersCompositeView({
-                collection: this.model.get('followers')
-            });
-            this.contentRegion.show(userFollowersView);
+            console.log("userFollowersLayout - onRender");
         },
 
         onShow: function() {
             console.log("userFollowersLayout - onShow");
+            var userFollowersView = new UserFollowersCompositeView({
+                collection: this.model.get('followers')
+            });
+            this.contentRegion.show(userFollowersView);
         }
     });
 });

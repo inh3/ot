@@ -22,20 +22,16 @@ function(   UserTweetsCompositeView,
             console.log("userTweetsLayout - initialize");
         },
 
-        onBeforeRender: function() {
-            // listen for model changes
-            this.listenTo(this.model, "change", this.render);
-        },
-
         onRender: function() {
-            var userTweetsView = new UserTweetsCompositeView({
-                collection: this.model.get('tweets')
-            });
-            this.contentRegion.show(userTweetsView);
+            console.log("userTweetsLayout - onRender");
         },
 
         onShow: function() {
             console.log("userTweetsLayout - onShow");
+            var userTweetsView = new UserTweetsCompositeView({
+                collection: this.model.get('tweets')
+            });
+            this.contentRegion.show(userTweetsView);
         }
     });
 });
