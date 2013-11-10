@@ -18,15 +18,27 @@ function program1(depth0,data) {
   if (stack1 = helpers.user_name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.user_name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "/tweets\" class=\"list-group-item\">Tweets</a>\n<a id=\"user-followers-item\" href=\"#!/";
+    + "/tweets\" class=\"list-group-item\">\n    <span class=\"badge\">";
+  if (stack1 = helpers.num_tweets) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.num_tweets; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</span>\n    Tweets\n</a>\n<a id=\"user-followers-item\" href=\"#!/";
   if (stack1 = helpers.user_name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.user_name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "/followers\" class=\"list-group-item\">Followers</a>\n<a id=\"user-following-item\" href=\"#!/";
+    + "/followers\" class=\"list-group-item\">\n    <span class=\"badge\">";
+  if (stack1 = helpers.num_followers) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.num_followers; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</span>\n    Followers\n</a>\n<a id=\"user-following-item\" href=\"#!/";
   if (stack1 = helpers.user_name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.user_name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "/following\" class=\"list-group-item\">Following</a>\n";
+    + "/following\" class=\"list-group-item\">\n    <span class=\"badge\">";
+  if (stack1 = helpers.num_follows) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.num_follows; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</span>\n    Following\n</a>\n";
   stack1 = helpers['if'].call(depth0, depth0.showTweetText, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   return buffer;

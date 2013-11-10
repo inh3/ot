@@ -31,6 +31,18 @@ function(   TweetCollection,
             this.set('following', new FollowingCollection());
         },
 
+        parse: function(response, options) {
+
+            // convert integer fields from strings
+            if(response !== null && response !== undefined) {
+                response.id = parseInt(response.id, 10);
+                response.num_tweets = parseInt(response.num_tweets, 10);
+                response.num_follows = parseInt(response.num_follows, 10);
+                response.num_followers = parseInt(response.num_followers, 10);
+            }
+            return response;
+        },
+
         userLogin: function(userCredentials) {
             console.log("UserModel - userLogin");
             console.log(userCredentials);
@@ -211,6 +223,7 @@ function(   TweetCollection,
                     EventAggregator.trigger('user:make-tweet:complete', true);
                     self.get('tweets').add(tweetModel, { at: 0, silent: true });
                     self.get('tweets').trigger("reset");
+                    self.set('num_tweets', self.get('num_tweets') + 1);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
@@ -257,6 +270,9 @@ function(   TweetCollection,
                 if(unfollowedUserModel.length > 0) {
                     self.get('following').remove(unfollowedUserModel[0]);
                 }
+                if(self.get('num_follows') > 0) {
+                    self.set('num_follows', self.get('num_follows') - 1);
+                }
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
@@ -293,6 +309,7 @@ function(   TweetCollection,
                 dataType: 'json'
             }).done(function () {
                     console.log("UserModel - addFollower - Done");
+                    self.set('num_follows', self.get('num_follows') + 1);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {

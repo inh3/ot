@@ -1,6 +1,15 @@
-<a id="user-tweets-item" href="#!/{{user_name}}/tweets" class="list-group-item">Tweets</a>
-<a id="user-followers-item" href="#!/{{user_name}}/followers" class="list-group-item">Followers</a>
-<a id="user-following-item" href="#!/{{user_name}}/following" class="list-group-item">Following</a>
+<a id="user-tweets-item" href="#!/{{user_name}}/tweets" class="list-group-item">
+    <span class="badge">{{num_tweets}}</span>
+    Tweets
+</a>
+<a id="user-followers-item" href="#!/{{user_name}}/followers" class="list-group-item">
+    <span class="badge">{{num_followers}}</span>
+    Followers
+</a>
+<a id="user-following-item" href="#!/{{user_name}}/following" class="list-group-item">
+    <span class="badge">{{num_follows}}</span>
+    Following
+</a>
 {{#if showTweetText}}
 <div id="tweet-entry" class="list-group-item">
     <textarea id="tweet-text" class="form-control" rows="7" maxlength="140"/>
