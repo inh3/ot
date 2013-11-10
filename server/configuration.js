@@ -23,7 +23,7 @@ module.exports = function(app, express) {
         secret: 'open-tweet-secret',
         cookie: {
             // 5 minutes
-            maxAge: 60000 * 5
+            maxAge: 60000 * 20
         }
     }));
 
