@@ -20,6 +20,11 @@ tweetRepository.on('tweet-repo:response-end:add-tweet', function(queryKey, added
     tweetRepository.removeTweet(addedTweet.id);
 });
 
+tweetRepository.on('tweet-repo:response-end:get-tweets-for-followed-users', function(queryKey, follwedUserTweets) {
+    console.log('queryId: ' + queryKey);
+    console.log(follwedUserTweets);
+});
+
 // get tweets by user
 tweetRepository.getTweetsByUserId(1);
 
@@ -34,6 +39,11 @@ tweetRepository.getTweetsByUserId(5);
 
 // get tweets by user
 tweetRepository.getTweetsByUserId(2);
+
+// get tweets of followed users
+tweetRepository.getTweetsFromFollowedUsers(5);
+
+tweetRepository.getTweetsFromFollowedUsers(99);
 
 // disconnect
 tweetRepository.dbDisconnect();

@@ -15,6 +15,7 @@ function TweetRepository() {
 
     // prepared sql statements
     var getTweetsId = this.mariaClient.prepare('CALL GetTweetsByUserId(:id)');
+    var getTweetsFromFollowedUsers = this.mariaClient.prepare('CALL GetTweetsFromFollowedUsers(:id)');
 
     var insertTweet = this.mariaClient.prepare('CALL InsertTweet(:user_id, :tweet_message)');
     var deleteTweet = this.mariaClient.prepare('CALL DeleteTweet(:id)');
@@ -55,6 +56,48 @@ function TweetRepository() {
             }
             else {
                 self.emit('tweet-repo:response-end:get-tweets-by-user-id', queryKey, null);
+            }
+        });
+
+        // return query key to the caller
+        return queryKey;
+    };
+
+    this.getTweetsFromFollowedUsers = function(userId) {
+        // increment and return query key
+        var queryKey = this.generateQueryKey();
+
+        // followed user tweets to return
+        var followedUserTweets = [];
+
+        // perform the query
+        var dbQuery = this.mariaClient.query(getTweetsFromFollowedUsers({
+            id: userId
+        }));
+
+        // response to query
+        dbQuery.on('result', function(dbResponse) {
+            dbResponse.on('row', function(responseRow) {
+                //console.log('Result row: ' + Inspect(responseRow));
+                followedUserTweets.push(responseRow);
+            });
+            dbResponse.on('error', function(responseError) {
+                console.log('[ tweet repo ] error: ' + Inspect(responseError));
+                self.emit('tweet-repo:result-error', responseError);
+            });
+            dbResponse.on('end', function(responseInfo) {
+                //console.log('Result finished: ' + Inspect(responseInfo));
+                self.emit('tweet-repo:result-end', responseInfo);
+            });
+        });
+        // end of response
+        dbQuery.on('end', function() {
+            //console.log('[ tweet repo ] response end: ');
+            if(followedUserTweets.length > 0) {
+                self.emit('tweet-repo:response-end:get-tweets-for-followed-users', queryKey, followedUserTweets);
+            }
+            else {
+                self.emit('tweet-repo:response-end:get-tweets-for-followed-users', queryKey, null);
             }
         });
 
