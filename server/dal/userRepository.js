@@ -18,6 +18,8 @@ function UserRepository() {
     var getUserByName = this.mariaClient.prepare('CALL GetUserByName(:user_name)');
     var getUserLogin = this.mariaClient.prepare('CALL GetUserForLogin(:user_name, :password)');
 
+    var searchUser = this.mariaClient.prepare('CALL SearchForUser(:user_name, :id)');
+
     var insertUser = this.mariaClient.prepare(('CALL InsertUser(:user_name, :password, :email, :sound_byte)'));
     var deleteUser = this.mariaClient.prepare(('CALL DeleteUser(:id)'));
 
@@ -131,6 +133,50 @@ function UserRepository() {
         dbQuery.on('end', function() {
             //console.log('[ follow repo ] response end: ');
             self.emit('user-repo:response-end:get-user-login', queryKey, userResult);
+        });
+
+        // return query key to the caller
+        return queryKey;
+    };
+
+    // retrieve user's information during login
+    this.searchUserByName = function(userName, userId) {
+
+        // user to return
+        var searchResults = [];
+
+        // increment and return query key
+        var queryKey = this.generateQueryKey();
+
+        // perform the query
+        var dbQuery = this.mariaClient.query(searchUser({
+            user_name: userName,
+            id: userId
+        }));
+
+        // response to query
+        dbQuery.on('result', function(dbResponse) {
+            dbResponse.on('row', function(responseRow) {
+                //console.log('Result row: ' + Inspect(responseRow));
+                searchResults.push(responseRow);
+            });
+            dbResponse.on('error', function(responseError) {
+                console.log('[ user repo ] error: ' + Inspect(responseError));
+                self.emit('user-repo:result-error', responseError);
+            });
+            dbResponse.on('end', function(responseInfo) {
+                //console.log('Result finished: ' + Inspect(responseInfo));
+                self.emit('user-repo:result-end', responseInfo);
+            });
+        });
+        // end of response
+        dbQuery.on('end', function() {
+            if(searchResults.length > 0) {
+                self.emit('user-repo:response-end:search-user-by-name', queryKey, searchResults);
+            }
+            else {
+                self.emit('user-repo:response-end:search-user-by-name', queryKey, null);
+            }
         });
 
         // return query key to the caller

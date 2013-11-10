@@ -43,21 +43,13 @@ function(   LoginModel,
         initialize: function() {
             console.log("loginLayout - initialize");
             this.loginModel = new LoginModel();
-        },
 
-        onClose: function() {
-            console.log("loginLayout - onShow");
+            // debounce the login buttons
+            this.loginButtonClick = _.debounce(this.loginButtonClick, 1000, true);
         },
 
         onRender: function() {
             this.delegateEvents();
-        },
-
-        onShow: function() {
-            console.log("loginLayout - onShow");
-
-            // debounce the login buttons
-            this.loginButtonClick = _.debounce(this.loginButtonClick, 1000, true);
         },
 
         loginKeyPress: function(event) {
@@ -73,8 +65,6 @@ function(   LoginModel,
             }
         },
         loginButtonClick: function() {
-            console.log("loginLayout - loginButtonClick");
-
             AppUser.userLogin(this.loginModel.toJSON());
         }
     });

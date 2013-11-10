@@ -18,14 +18,6 @@ function(   UserFollowingCompositeView,
             contentRegion: "#user-following-content"
         },
 
-        initialize: function() {
-            console.log("userFollowingLayout - initialize");
-        },
-
-        onRender: function() {
-            console.log("userFollowingLayout - onRender");
-        },
-
         onShow: function() {
             console.log("userFollowingLayout - onShow");
             var userFollowingView = new UserFollowingCompositeView({

@@ -4,6 +4,11 @@
             <button id="{{id}}" type="button" class="btn btn-default media-object unfollow-button">Un-Follow</button>
         </div>
     {{/if}}
+    {{#if follow}}
+        <div class="pull-right">
+            <button id="{{id}}" type="button" class="btn btn-default media-object follow-button">Follow</button>
+        </div>
+    {{/if}}
     <div class="media-body">
         <a href="#!/{{user_name}}"><strong>{{user_name}}</strong></a>
     </div>

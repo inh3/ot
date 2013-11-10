@@ -20,6 +20,7 @@ function(   ApplicationController,
             "!/:user/tweets":       "userTweets",
             "!/:user/following":    "userFollowing",
             "!/:user/followers":    "userFollowers",
+            "!/search/:query":      "userSearch",
             "*path":                "userLogin"
         },
 
@@ -36,6 +37,10 @@ function(   ApplicationController,
                 if(loginSuccess === true) {
                     this.navigate('!/' + AppUser.get('user_name'), { trigger: true, replace: true });
                 }
+            });
+
+            this.listenTo(EventAggregator, "nav-bar-layout:query", function(queryString) {
+                this.navigate('!/search/' + queryString, { trigger: true, replace: true });
             });
         }
     });

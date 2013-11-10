@@ -77,6 +77,14 @@ userRepository.on('user-repo:response-end:get-user-by-name', function(queryKey, 
     delete responseHash[queryKey];
 });
 
+userRepository.on('user-repo:response-end:search-user-by-name', function(queryKey, searchResults) {
+    // respond with user information
+    responseHash[queryKey].res.send(searchResults);
+
+    // remove query key from hashtable
+    delete responseHash[queryKey];
+});
+
 // TWEET REPOSITORY ----------------------------------------------------------------------------------------------------
 
 var TweetRepository = require(__dirname + '/dal/tweetRepository.js');
@@ -125,6 +133,14 @@ followRepository.on('follow-repo:response-end:get-followers-by-user-id', functio
 followRepository.on('follow-repo:response-end:get-following-by-user-id', function(queryKey, followingUsers) {
     // respond with following information
     responseHash[queryKey].res.send(followingUsers);
+
+    // remove query key from hashtable
+    delete responseHash[queryKey];
+});
+
+followRepository.on('follow-repo:response-end:add-follow', function(queryKey, addedFollow) {
+    // respond with the user that has been unfollowed
+    responseHash[queryKey].res.send(addedFollow);
 
     // remove query key from hashtable
     delete responseHash[queryKey];
@@ -261,12 +277,33 @@ module.exports = function(app) {
     app.post('/following', function(req, res) {
         // this should only work if the user is logged in
         if(sessionIsActive(req)) {
-            if(req.body.userId === req.session.user.id) {
-                queryKey = followRepository.removeFollow(req.session.user.id, req.body.followedUserId);
-                responseHash[queryKey] = { res: res, req: req };
+            if(req.body.userId > 0) {
+                if(req.body.addFollow) {
+                    queryKey = followRepository.addFollow(req.session.user.id, req.body.userId);
+                    responseHash[queryKey] = { res: res, req: req };
+                }
+                else {
+                    queryKey = followRepository.removeFollow(req.session.user.id, req.body.userId);
+                    responseHash[queryKey] = { res: res, req: req };
+                }
             }
             else {
                 res.send(401);
+            }
+        }
+        else {
+            res.send(401);
+        }
+    });
+
+    app.get('/search', function(req, res) {
+        if(sessionIsActive(req)) {
+            if(req.query.queryString && (typeof req.query.queryString === 'string')) {
+                var queryKey = userRepository.searchUserByName(req.query.queryString, req.session.user.id);
+                responseHash[queryKey] = { res: res, req: req };
+            }
+            else {
+                res.send(404);
             }
         }
         else {

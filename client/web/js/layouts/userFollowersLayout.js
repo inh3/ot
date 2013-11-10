@@ -18,14 +18,6 @@ function(   UserFollowersCompositeView,
             contentRegion: "#user-followers-content"
         },
 
-        initialize: function() {
-            console.log("userFollowersLayout - initialize");
-        },
-
-        onRender: function() {
-            console.log("userFollowersLayout - onRender");
-        },
-
         onShow: function() {
             console.log("userFollowersLayout - onShow");
             var userFollowersView = new UserFollowersCompositeView({

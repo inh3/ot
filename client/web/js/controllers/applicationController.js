@@ -1,10 +1,12 @@
 define([    "models/userModel",
+            "collections/SearchCollection",
             "appUser",
             "vent",
             "cookie",
             "backbone",
             "marionette"],
 function(   UserModel,
+            SearchCollection,
             AppUser,
             EventAggregator,
             Cookie,
@@ -123,6 +125,28 @@ function(   UserModel,
             var self = this;
             userPromise.done(function() {
                 EventAggregator.trigger("controller:user-followers", AppUser);
+            });
+            userPromise.fail(function() {
+                self.userLogin();
+            });
+        },
+
+        userSearch: function(queryString) {
+
+            var searchCollection = new SearchCollection();
+            searchCollection.performQuery(queryString);
+
+            var userPromise = new $.Deferred();
+            this.listenToOnce(EventAggregator, "search:query:complete", function(getStatus) {
+                getStatus === true ? userPromise.resolve() : userPromise.reject();
+            });
+
+            var self = this;
+            userPromise.done(function() {
+                EventAggregator.trigger("controller:search-results", {
+                    queryString: queryString,
+                    searchResults: searchCollection
+                });
             });
             userPromise.fail(function() {
                 self.userLogin();

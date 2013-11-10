@@ -5,6 +5,7 @@ define([    "layouts/navigationBarLayout",
             "layouts/userTweetsLayout",
             "layouts/userFollowersLayout",
             "layouts/userFollowingLayout",
+            "layouts/searchLayout",
             "routers/applicationRouter",
             "backbone",
             "vent",
@@ -17,6 +18,7 @@ function(   NavigationBarLayout,
             UserTweetsLayout,
             UserFollowersLayout,
             UserFollowingLayout,
+            SearchLayout,
             ApplicationRouter,
             Backbone,
             EventAggregator,
@@ -134,9 +136,22 @@ function(   NavigationBarLayout,
         this.sideBarLayout.selectFollowing();
     };
 
+    OpenTweet.searchResults = function(queryObject) {
+        $('#side-bar').removeClass('hidden');
+        OpenTweet.navigationBarLayout.showQuery();
+
+        // show the search results
+        showTweetText();
+        var searchLayout = new SearchLayout({ queryObject: queryObject });
+        OpenTweet.contentRegion.show(searchLayout);
+        this.sideBarLayout.removeSelect();
+    };
+
     // controller events
     OpenTweet.listenTo(EventAggregator, "controller:login", OpenTweet.userLogin);
     OpenTweet.listenTo(EventAggregator, "controller:user-default", OpenTweet.userDefault);
+
+    OpenTweet.listenTo(EventAggregator, "controller:search-results", OpenTweet.searchResults);
 
     OpenTweet.listenTo(EventAggregator, "controller:user-tweets", OpenTweet.userTweets);
     OpenTweet.listenTo(EventAggregator, "controller:user-followers", OpenTweet.userFollowers);

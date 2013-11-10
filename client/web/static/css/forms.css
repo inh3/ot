@@ -1,9 +1,0 @@
-#login-button {
-    margin-bottom: 0;
-}
-
-button[disabled] {
-    background:#ccc;
-    border-color: #ccc;
-    text-shadow:none;
-}

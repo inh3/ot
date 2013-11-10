@@ -29,6 +29,10 @@ module.exports = function(grunt) {
                     // user
                     "client/web/static/templates/user-layout.js":                       "client/web/js/templates/user-layout.hbs",
 
+                    // search
+                    "client/web/static/templates/search-layout.js":                     "client/web/js/templates/search-layout.hbs",
+                    "client/web/static/templates/search-results-composite-view.js":     "client/web/js/templates/search-results-composite-view.hbs",
+
                     // user tweets
                     "client/web/static/templates/user-tweets-layout.js":                "client/web/js/templates/user-tweets-layout.hbs",
                     // user followers

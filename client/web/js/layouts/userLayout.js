@@ -18,14 +18,6 @@ function(   UserTweetsCompositeView,
             contentRegion: "#user-layout-content"
         },
 
-        initialize: function() {
-            console.log("userLayout - initialize");
-        },
-
-        onRender: function() {
-            console.log("userTweetsLayout - onRender");
-        },
-
         onShow: function() {
             console.log("userTweetsLayout - onShow");
             var userTweetsView = new UserTweetsCompositeView({

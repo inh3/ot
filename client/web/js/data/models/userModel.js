@@ -208,8 +208,7 @@ function(   TweetCollection,
             this.removeFollowerPost = followModel.fetch({
                 type: 'POST',
                 data: {
-                    userId: this.get('id'),
-                    followedUserId: followedUserId
+                    userId: followedUserId
                 },
                 dataType: 'json'
             }).done(function () {
@@ -229,6 +228,42 @@ function(   TweetCollection,
 
                 // remove reference to fetch request because it is done
                 delete self.removeFollowerPost;
+            });
+        },
+
+        addFollower: function(followedUserId) {
+            console.log("UserModel - addFollower");
+
+            // store reference to self
+            var self = this;
+
+            // cancel previous fetch if it exists
+            if (this.addFollowerPost !== undefined) {
+                this.addFollowerPost.abort();
+            }
+
+            // fetch new data (reset collection on result)
+            var followModel = new Backbone.Model();
+            followModel.url = '/following';
+            this.addFollowerPost = followModel.fetch({
+                type: 'POST',
+                data: {
+                    addFollow: true,
+                    userId: followedUserId
+                },
+                dataType: 'json'
+            }).done(function () {
+                    console.log("UserModel - addFollower - Done");
+            }).fail(function (jqXhr) {
+                // don't trigger error if abort
+                if (jqXhr.statusText !== "abort") {
+                    console.log("UserModel - addFollower - Error");
+                }
+            }).always(function () {
+                console.log("UserModel - addFollower - Always");
+
+                // remove reference to fetch request because it is done
+                delete self.addFollowerPost;
             });
         },
 

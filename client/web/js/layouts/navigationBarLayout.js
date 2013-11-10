@@ -22,14 +22,6 @@ function(   EventAggregator,
             "userQuery": "#user-query"
         },
 
-        initialize: function() {
-            //console.log("titleBarLayout - initialize")
-        },
-
-        onShow: function() {
-            //console.log("titleBarLayout - onShow");
-        },
-
         userQueryKeyPress: function(event) {
             // enter has been pressed
             if (event.which == 13 || event.keyCode == 13) {
@@ -39,6 +31,9 @@ function(   EventAggregator,
                     // lose focus on the input field
                     this.ui.userQuery.blur();
                     this.ui.userQuery.val('');
+
+                    // trigger route for search results
+                    EventAggregator.trigger("nav-bar-layout:query", queryString);
                 }
             }
         },

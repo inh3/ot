@@ -31,6 +31,12 @@ userRepository.on('user-repo:response-end:get-user-by-name', function(queryKey, 
     console.log(repoResult);
 });
 
+userRepository.on('user-repo:response-end:search-user-by-name', function(queryKey, repoResult) {
+    console.log('');
+    console.log('queryId: ' + queryKey);
+    console.log(repoResult);
+});
+
 // listen for events
 userRepository.on('user-repo:response-end:add-user', function(queryKey, newUser) {
     console.log('');
@@ -64,6 +70,9 @@ userRepository.getUserLogin('rita', 'test');
 
 // get user
 userRepository.getUser(5);
+
+// search fo ruser
+userRepository.searchUserByName('a', 1);
 
 // insert user
 userRepository.addUser({
