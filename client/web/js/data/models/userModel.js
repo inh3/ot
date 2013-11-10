@@ -21,6 +21,9 @@ function(   TweetCollection,
             // create empty set of tweets
             this.set('tweets', new TweetCollection());
 
+            // create empty set of followed user tweets
+            this.set('followedTweets', new TweetCollection());
+
             // create empty set of followers
             this.set('followers', new FollowerCollection());
 
@@ -50,7 +53,6 @@ function(   TweetCollection,
                 dataType: 'json'
             }).done(function () {
                     console.log("UserModel - userLogin - Done");
-                    self.set('authId', self.get('id'));
                     EventAggregator.trigger('user:login:complete', true);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
@@ -82,7 +84,6 @@ function(   TweetCollection,
 
             // fetch new data (reset collection on result)
             this.userRequest = this.fetch({
-                reset: true,
                 data: {
                     id: userId
                 },
@@ -120,7 +121,6 @@ function(   TweetCollection,
 
             // fetch new data (reset collection on result)
             this.userByNameRequest = this.fetch({
-                reset: true,
                 data: {
                     userName: userName
                 },
@@ -164,7 +164,6 @@ function(   TweetCollection,
             tweetModel.url = '/tweet';
             this.makeTweetPost = tweetModel.fetch({
                 type: 'POST',
-                reset: true,
                 data: {
                     userId: this.get('id'),
                     tweetText: tweetText
@@ -190,6 +189,14 @@ function(   TweetCollection,
         getFollowers: function() {
             // get followers for the user
             this.get('followers').fetchFollowers(this.get('id'));
+        },
+
+        getFollowedTweets: function() {
+            var self = this;
+            this.listenToOnce(EventAggregator, 'following-collection:fetch-following:complete', function() {
+                self.get('followedTweets').fetchFollowedTweets(self.get('id'));
+            });
+            this.getFollowing();
         },
 
         getFollowing: function() {

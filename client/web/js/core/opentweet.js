@@ -1,6 +1,7 @@
 define([    "layouts/navigationBarLayout",
             "layouts/sideBarLayout",
             "layouts/loginLayout",
+            "layouts/userLayout",
             "layouts/userTweetsLayout",
             "layouts/userFollowersLayout",
             "layouts/userFollowingLayout",
@@ -12,6 +13,7 @@ define([    "layouts/navigationBarLayout",
 function(   NavigationBarLayout,
             SideBarLayout,
             LoginLayout,
+            UserDefaultLayout,
             UserTweetsLayout,
             UserFollowersLayout,
             UserFollowingLayout,
@@ -42,9 +44,7 @@ function(   NavigationBarLayout,
     });
 
     // configuration, setting up regions, etc ...
-    OpenTweet.addInitializer(function(options) {
-        //console.log("OpenTweet - addInitializer");
-
+    OpenTweet.addInitializer(function() {
         // attach main router and controller to application
         OpenTweet.appRouter = new ApplicationRouter();
 
@@ -58,19 +58,13 @@ function(   NavigationBarLayout,
 
         // create other views
         this.loginLayout = new LoginLayout();
+        this.userDefaultLayout = new UserDefaultLayout({ model: AppUser });
         this.userTweetsLayout = new UserTweetsLayout({ model: AppUser });
-        this.userFollowers = new UserFollowersLayout({ model: AppUser });
-        this.userFollowing = new UserFollowingLayout({ model: AppUser });
+        this.userFollowersLayout = new UserFollowersLayout({ model: AppUser });
+        this.userFollowingLayout = new UserFollowingLayout({ model: AppUser });
     });
 
-    OpenTweet.on("initialize:before", function(options) {
-        //console.log("OpenTweet - initialize:before");
-        options.moreData = "Application options..."
-    });
-
-    OpenTweet.on("initialize:after", function(options) {
-        //console.log("OpenTweet - initialize:after");
-
+    OpenTweet.on("initialize:after", function() {
         if(Backbone.history) {
             Backbone.history.start();
         }
@@ -84,12 +78,34 @@ function(   NavigationBarLayout,
         OpenTweet.contentRegion.show(this.loginLayout);
     };
 
-    OpenTweet.userTweets = function() {
+    OpenTweet.userDefault = function() {
         $('#side-bar').removeClass('hidden');
 
-        // show the user layout
+        // show the default user layout
+        if(AppUser.get('authId') == AppUser.get('id')) {
+            showTweetText();
+            AppUser.get('followedTweets').reset();
+            AppUser.getFollowedTweets();
+            this.sideBarLayout.removeSelect();
+            OpenTweet.contentRegion.show(this.userDefaultLayout);
+        }
+        else {
+            this.userTweets(true);
+        }
+    };
+
+    OpenTweet.userTweets = function(selectTweets) {
+        $('#side-bar').removeClass('hidden');
+
+        // show the user tweet layout
         showTweetText();
+        AppUser.get('tweets').reset();
+        AppUser.getTweets();
         OpenTweet.contentRegion.show(this.userTweetsLayout);
+        if(selectTweets) {
+            OpenTweet.appRouter.navigate('!/' + AppUser.get('user_name'), { replace: true });
+            this.sideBarLayout.selectTweets();
+        }
     };
 
     OpenTweet.userFollowers = function() {
@@ -97,7 +113,9 @@ function(   NavigationBarLayout,
 
         // show the followers tweet view
         showTweetText();
-        OpenTweet.contentRegion.show(this.userFollowers);
+        AppUser.get('followers').reset();
+        AppUser.getFollowers();
+        OpenTweet.contentRegion.show(this.userFollowersLayout);
     };
 
     OpenTweet.userFollowing = function() {
@@ -105,12 +123,14 @@ function(   NavigationBarLayout,
 
         // show the followers tweet view
         showTweetText();
-        OpenTweet.contentRegion.show(this.userFollowing);
+        AppUser.get('following').reset();
+        AppUser.getFollowing();
+        OpenTweet.contentRegion.show(this.userFollowingLayout);
     };
 
     // controller events
     OpenTweet.listenTo(EventAggregator, "controller:login", OpenTweet.userLogin);
-    OpenTweet.listenTo(EventAggregator, "controller:user-default", OpenTweet.userTweets);
+    OpenTweet.listenTo(EventAggregator, "controller:user-default", OpenTweet.userDefault);
 
     OpenTweet.listenTo(EventAggregator, "controller:user-tweets", OpenTweet.userTweets);
     OpenTweet.listenTo(EventAggregator, "controller:user-followers", OpenTweet.userFollowers);

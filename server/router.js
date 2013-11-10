@@ -25,6 +25,8 @@ userRepository.dbConnect();
 // getUserLogin
 userRepository.on('user-repo:response-end:get-user-login', function(queryKey, userObject) {
     if(userObject) {
+        userObject.authId = userObject.id;
+
         // set session to indicate logged in
         responseHash[queryKey].req.session.user = userObject;
 
@@ -50,12 +52,28 @@ userRepository.on('user-repo:response-end:get-user-login', function(queryKey, us
 
 // listen for events
 userRepository.on('user-repo:response-end:get-user', function(queryKey, userObject) {
-    userObject ? responseHash[queryKey].res.send(userObject) : responseHash[queryKey].res.send(404);
+    if(userObject) {
+        if(userObject.id == responseHash[queryKey].req.session.user.id) {
+            userObject.authId = responseHash[queryKey].req.session.user.id;
+        }
+        responseHash[queryKey].res.send(userObject)
+    }
+    else {
+        responseHash[queryKey].res.send(404);
+    }
     delete responseHash[queryKey];
 });
 
 userRepository.on('user-repo:response-end:get-user-by-name', function(queryKey, userObject) {
-    userObject ? responseHash[queryKey].res.send(userObject) : responseHash[queryKey].res.send(404);
+    if(userObject) {
+        if(userObject.id == responseHash[queryKey].req.session.user.id) {
+            userObject.authId = responseHash[queryKey].req.session.user.id;
+        }
+        responseHash[queryKey].res.send(userObject)
+    }
+    else {
+        responseHash[queryKey].res.send(404);
+    }
     delete responseHash[queryKey];
 });
 
@@ -69,6 +87,14 @@ tweetRepository.dbConnect();
 tweetRepository.on('tweet-repo:response-end:get-tweets-by-user-id', function(queryKey, userTweets) {
     // respond with user information
     responseHash[queryKey].res.send(userTweets);
+
+    // remove query key from hashtable
+    delete responseHash[queryKey];
+});
+
+tweetRepository.on('tweet-repo:response-end:get-tweets-for-followed-users', function(queryKey, follwedUserTweets) {
+    // respond with user information
+    responseHash[queryKey].res.send(follwedUserTweets);
 
     // remove query key from hashtable
     delete responseHash[queryKey];
@@ -173,8 +199,20 @@ module.exports = function(app) {
     app.get('/tweets', function(req, res) {
         // this should only work if the user is logged in
         if(sessionIsActive(req)) {
-            var queryKey = tweetRepository.getTweetsByUserId(req.query.id);
-            responseHash[queryKey] = { res: res, req: req };
+            // get tweets for a user
+            var queryKey = null;
+            if(req.query.followed === undefined) {
+                queryKey = tweetRepository.getTweetsByUserId(req.query.id);
+                responseHash[queryKey] = { res: res, req: req };
+            }
+            // get followed users' tweets
+            else if(req.query.id === req.session.user.id) {
+                queryKey = tweetRepository.getTweetsFromFollowedUsers(req.query.id);
+                responseHash[queryKey] = { res: res, req: req };
+            }
+            else {
+                res.send(401);
+            }
         }
         else {
             res.send(401);

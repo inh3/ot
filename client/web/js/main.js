@@ -93,11 +93,13 @@ require.config({
 
 // application entry point
 require([   "jquery",
+            "vent",
             "opentweet",
             "marionette",
             "handlebars",
             "cookie"],
 function(   $,
+            EventAggregator,
             OpenTweet) {
 
     // initialize marionette renderer to support pre-compiled templates
@@ -109,7 +111,4 @@ function(   $,
     // start the application with options
     var options = {};
     OpenTweet.start(options);
-
-    // stop the module
-    //LegitMusic.module("SearchModule").stop();
 });

@@ -20,14 +20,15 @@ function(   UserFollowingCompositeView,
 
         initialize: function() {
             console.log("userFollowingLayout - initialize");
+        },
 
+        onBeforeRender: function() {
             // listen for model changes
             this.listenTo(this.model, "change", this.render);
         },
 
         onRender: function() {
-            this.model.get('following').reset();
-            this.model.getFollowing();
+
             var userFollowingView = new UserFollowingCompositeView({
                 collection: this.model.get('following')
             });

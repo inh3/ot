@@ -32,7 +32,7 @@ function(   AppUser,
             tweetButton:                    "#tweet-button"
         },
 
-        initialize: function() {
+        onBeforeRender: function() {
             // listen for model changes
             this.listenTo(this.model, "change", this.render);
         },
@@ -79,6 +79,17 @@ function(   AppUser,
                 self.ui.tweetText.removeAttr('disabled');
                 self.ui.tweetButton.removeAttr('disabled');
             });
+        },
+
+        removeSelect: function() {
+            var activeItem = this.$el.find('.active');
+            if(activeItem) {
+                activeItem.removeClass('active');
+            }
+        },
+
+        selectTweets: function() {
+            this.$el.find('#user-tweets-item').addClass('active');
         }
     });
 });

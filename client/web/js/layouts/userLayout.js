@@ -1,7 +1,7 @@
 define([    "compositeViews/userTweetsCompositeView",
             "vent",
             "handlebars",
-            "templates/user-tweets-layout",
+            "templates/user-layout",
             "marionette"],
 function(   UserTweetsCompositeView,
             EventAggregator,
@@ -11,15 +11,15 @@ function(   UserTweetsCompositeView,
 
     return Backbone.Marionette.Layout.extend({
 
-        template: Handlebars.templates["user-tweets-layout.hbs"],
+        template: Handlebars.templates["user-layout.hbs"],
 
         regions: {
-            headerRegion: "#user-tweets-layout-header",
-            contentRegion: "#user-tweets-layout-content"
+            headerRegion: "#user-layout-header",
+            contentRegion: "#user-layout-content"
         },
 
         initialize: function() {
-            console.log("userTweetsLayout - initialize");
+            console.log("userLayout - initialize");
         },
 
         onBeforeRender: function() {
@@ -29,7 +29,7 @@ function(   UserTweetsCompositeView,
 
         onRender: function() {
             var userTweetsView = new UserTweetsCompositeView({
-                collection: this.model.get('tweets')
+                collection: this.model.get('followedTweets')
             });
             this.contentRegion.show(userTweetsView);
         },
