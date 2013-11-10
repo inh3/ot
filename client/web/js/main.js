@@ -7,7 +7,7 @@ require.config({
     //urlArgs:                "bust=" + (new Date()).getTime(),
 
     // global dependencies
-    deps:                   [ "cookie", "jquery" ],
+    deps:                   [ "cookie", "jquery", "bootstrap" ],
 
     // paths to modules and libraries
     // .js is included automatically
@@ -54,6 +54,9 @@ require.config({
         // jquery
         jquery:             "./../lib/jquery/jquery-1.10.2/jquery-1.10.2.min",
 
+        // bootstrap
+        bootstrap:          "./../lib/bootstrap/bootstrap-dist-3.0.0/js/bootstrap.min",
+
         // marionette
         marionette:         "./../lib/marionette/marionette-1.1.0/marionette-1.1.0.min",
 
@@ -68,6 +71,10 @@ require.config({
     },
     // support for non-amd libraries
     shim: {
+        bootstrap: {
+            exports:        'bootstrap',
+            deps:           ['jquery']
+        },
         cookie: {
             exports:        'Cookie'
         },

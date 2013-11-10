@@ -136,6 +136,13 @@ function(   NavigationBarLayout,
     OpenTweet.listenTo(EventAggregator, "controller:user-followers", OpenTweet.userFollowers);
     OpenTweet.listenTo(EventAggregator, "controller:user-following", OpenTweet.userFollowing);
 
+    // login complete event
+    OpenTweet.listenTo(EventAggregator, "user:login:complete", function(loginSuccess) {
+        if(loginSuccess == true) {
+            OpenTweet.navigationBarLayout.showQuery();
+        }
+    });
+
     // export the app from this module
     return OpenTweet;
 });
