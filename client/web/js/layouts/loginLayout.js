@@ -46,6 +46,7 @@ function(   LoginModel,
         },
 
         onRender: function() {
+            this.ui.errorText.addClass('hidden');
             this.delegateEvents();
         },
 
@@ -69,9 +70,6 @@ function(   LoginModel,
         loginFailed: function(loginSuccess) {
             if(loginSuccess === false) {
                 this.ui.errorText.removeClass('hidden');
-            }
-            else {
-                this.ui.errorText.addClass('hidden');
             }
         }
     });

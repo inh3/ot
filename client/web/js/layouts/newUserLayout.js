@@ -50,6 +50,7 @@ function(   SignUpModel,
         },
 
         onRender: function() {
+            this.ui.errorText.addClass('hidden');
             this.delegateEvents();
         },
 
@@ -75,9 +76,6 @@ function(   SignUpModel,
         signUpFailed: function(signUpSuccess) {
             if(signUpSuccess === false) {
                 this.ui.errorText.removeClass('hidden');
-            }
-            else {
-                this.ui.errorText.addClass('hidden');
             }
         }
     });

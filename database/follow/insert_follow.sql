@@ -17,7 +17,7 @@ BEGIN
         UPDATE Users SET num_follows = num_follows + 1 WHERE id = userId;
         UPDATE Users SET num_followers = num_followers + 1 WHERE id = followedUserId;
         
-        SELECT user_id, followed_user_id, follow_date FROM Follow WHERE id = LAST_INSERT_ID();
+        SELECT followedUserId as followed_user_id, id, user_name, email, sound_byte, num_tweets, num_follows, num_followers FROM Users WHERE id = userId;
     END IF;
 END$$
 DELIMITER ;

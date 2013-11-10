@@ -134,6 +134,11 @@ tweetRepository.on('tweet-repo:response-end:add-tweet', function(queryKey, added
     // respond with follower information
     responseHash[queryKey].res.send(addedTweet);
 
+    // a tweet was successfully added
+    if(addedTweet) {
+        responseHash[queryKey].io.sockets.emit('tweet', addedTweet);
+    }
+
     // remove query key from hashtable
     delete responseHash[queryKey];
 });
@@ -164,6 +169,11 @@ followRepository.on('follow-repo:response-end:add-follow', function(queryKey, ad
     // respond with the user that has been unfollowed
     responseHash[queryKey].res.send(addedFollow);
 
+    // a tweet was successfully added
+    if(addedFollow) {
+        responseHash[queryKey].io.sockets.emit('addFollow', addedFollow);
+    }
+
     // remove query key from hashtable
     delete responseHash[queryKey];
 });
@@ -171,6 +181,11 @@ followRepository.on('follow-repo:response-end:add-follow', function(queryKey, ad
 followRepository.on('follow-repo:response-end:remove-follow', function(queryKey, unfollowedUser) {
     // respond with the user that has been unfollowed
     responseHash[queryKey].res.send(unfollowedUser);
+
+    // a tweet was successfully added
+    if(unfollowedUser) {
+        responseHash[queryKey].io.sockets.emit('removeFollow', unfollowedUser);
+    }
 
     // remove query key from hashtable
     delete responseHash[queryKey];
@@ -256,7 +271,7 @@ module.exports = function(app, io) {
         // this should only work if the user is logged in
         if(sessionIsActive(req) && req.body.tweetText && req.body.userId === req.session.user.id) {
             var queryKey = tweetRepository.addTweet(req.session.user.id, req.body.tweetText);
-            responseHash[queryKey] = { res: res, req: req };
+            responseHash[queryKey] = { res: res, req: req, io: io };
         }
         else {
             res.send(401);
@@ -324,11 +339,11 @@ module.exports = function(app, io) {
             if(req.body.userId > 0) {
                 if(req.body.addFollow) {
                     queryKey = followRepository.addFollow(req.session.user.id, req.body.userId);
-                    responseHash[queryKey] = { res: res, req: req };
+                    responseHash[queryKey] = { res: res, req: req, io: io };
                 }
                 else {
                     queryKey = followRepository.removeFollow(req.session.user.id, req.body.userId);
-                    responseHash[queryKey] = { res: res, req: req };
+                    responseHash[queryKey] = { res: res, req: req, io: io };
                 }
             }
             else {
@@ -363,9 +378,10 @@ module.exports = function(app, io) {
     // SOCKET IO -------------------------------------------------------------------------------------------------------
 
     io.sockets.on('connection', function (socket) {
-        socket.emit('news', { hello: 'world' });
-        socket.on('my other event', function (data) {
-            console.log(data);
+        console.log("socket.io - client connect (" + socket.id + ")");
+
+        socket.on('disconnect', function () {
+            console.log("socket.io - client disconnect (" + socket.id + ")");
         });
     });
 };
