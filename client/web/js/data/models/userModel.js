@@ -191,6 +191,47 @@ function(   TweetCollection,
             this.get('followers').fetchFollowers(this.get('id'));
         },
 
+        removeFollower: function(followedUserId) {
+            console.log("UserModel - removeFollower");
+
+            // store reference to self
+            var self = this;
+
+            // cancel previous fetch if it exists
+            if (this.removeFollowerPost !== undefined) {
+                this.removeFollowerPost.abort();
+            }
+
+            // fetch new data (reset collection on result)
+            var followModel = new Backbone.Model();
+            followModel.url = '/following';
+            this.removeFollowerPost = followModel.fetch({
+                type: 'POST',
+                data: {
+                    userId: this.get('id'),
+                    followedUserId: followedUserId
+                },
+                dataType: 'json'
+            }).done(function () {
+                console.log("UserModel - removeFollower - Done");
+                // remove the user locally
+                var unfollowedUserModel = self.get('following').where({ id: followModel.get('followed_user_id') });
+                if(unfollowedUserModel.length > 0) {
+                    self.get('following').remove(unfollowedUserModel[0]);
+                }
+            }).fail(function (jqXhr) {
+                // don't trigger error if abort
+                if (jqXhr.statusText !== "abort") {
+                    console.log("UserModel - removeFollower - Error");
+                }
+            }).always(function () {
+                console.log("UserModel - removeFollower - Always");
+
+                // remove reference to fetch request because it is done
+                delete self.removeFollowerPost;
+            });
+        },
+
         getFollowedTweets: function() {
             var self = this;
             this.listenToOnce(EventAggregator, 'following-collection:fetch-following:complete', function() {

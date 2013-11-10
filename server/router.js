@@ -130,6 +130,14 @@ followRepository.on('follow-repo:response-end:get-following-by-user-id', functio
     delete responseHash[queryKey];
 });
 
+followRepository.on('follow-repo:response-end:remove-follow', function(queryKey, unfollowedUser) {
+    // respond with the user that has been unfollowed
+    responseHash[queryKey].res.send(unfollowedUser);
+
+    // remove query key from hashtable
+    delete responseHash[queryKey];
+});
+
 // MODULE DEFINITION ---------------------------------------------------------------------------------------------------
 
 module.exports = function(app) {
@@ -235,8 +243,31 @@ module.exports = function(app) {
     app.get('/following', function(req, res) {
         // this should only work if the user is logged in
         if(sessionIsActive(req)) {
-            var queryKey = followRepository.getFollowingByUserId(req.query.id);
-            responseHash[queryKey] = { res: res, req: req };
+            var queryKey = null;
+            // get list of followed users
+            if(req.query.id) {
+                queryKey = followRepository.getFollowingByUserId(req.query.id);
+                responseHash[queryKey] = { res: res, req: req };
+            }
+            else {
+                res.send(401);
+            }
+        }
+        else {
+            res.send(401);
+        }
+    });
+
+    app.post('/following', function(req, res) {
+        // this should only work if the user is logged in
+        if(sessionIsActive(req)) {
+            if(req.body.userId === req.session.user.id) {
+                queryKey = followRepository.removeFollow(req.session.user.id, req.body.followedUserId);
+                responseHash[queryKey] = { res: res, req: req };
+            }
+            else {
+                res.send(401);
+            }
         }
         else {
             res.send(401);

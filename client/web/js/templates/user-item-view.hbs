@@ -1,2 +1,11 @@
-{{user_name}}
-{{sound_byte}}
+<div class="media">
+    {{#if unfollow}}
+        <div class="pull-right">
+            <button id="{{id}}" type="button" class="btn btn-default media-object unfollow-button">Un-Follow</button>
+        </div>
+    {{/if}}
+    <div class="media-body">
+        <a href="#!/{{user_name}}"><strong>{{user_name}}</strong></a>
+    </div>
+    {{sound_byte}}
+</div>

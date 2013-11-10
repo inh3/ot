@@ -28,7 +28,6 @@ function(   UserFollowingCompositeView,
         },
 
         onRender: function() {
-
             var userFollowingView = new UserFollowingCompositeView({
                 collection: this.model.get('following')
             });
