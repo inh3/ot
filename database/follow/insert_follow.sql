@@ -14,6 +14,9 @@ BEGIN
         INSERT INTO Follow ( user_id, followed_user_id, follow_date )
         VALUES ( userId, followedUserId, NOW() );
         
+        UPDATE Users SET num_follows = num_follows + 1 WHERE id = userId;
+        UPDATE Users SET num_followers = num_followers + 1 WHERE id = followedUserId;
+        
         SELECT user_id, followed_user_id, follow_date FROM Follow WHERE id = LAST_INSERT_ID();
     END IF;
 END$$

@@ -14,6 +14,8 @@ BEGIN
     IF tweetUserId IS NOT NULL THEN
         INSERT INTO Tweets ( user_id, user_name, message, timestamp )
         VALUES ( tweetUserId, tweetUserName, tweetMessage, NOW() );
+        
+        UPDATE Users SET num_tweets = num_tweets + 1 WHERE id = tweetUserId;
 
         SELECT id, user_id, user_name, message, timestamp FROM Tweets WHERE id = LAST_INSERT_ID();
     END IF;
