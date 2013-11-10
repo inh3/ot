@@ -30,8 +30,8 @@ function(   Moment,
         },
 
         updateTimeStamp: function() {
-            var tweetTime = Moment(new Date(this.model.get('timestamp') + ' UTC'));
-            var currTime = Moment(new Date());
+            var tweetTime = Moment.utc(this.model.get('timestamp'));
+            var currTime = Moment.utc(new Date());
 
             var dayDiff = currTime.diff(tweetTime, 'days');
             currTime.subtract(dayDiff, 'days');

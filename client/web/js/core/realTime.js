@@ -14,6 +14,17 @@ function(   AppUser,
                 AppUser.get('followedTweets').trigger("reset");
             }
         }
+
+        if(AppUser.get('user_name') == tweetData.user_name) {
+            var foundTweet = AppUser.get('tweets').findWhere({
+                id: tweetData.id
+            });
+            if(!foundTweet) {
+                AppUser.get('tweets').add(tweetData, { at: 0, silent: true });
+                AppUser.get('tweets').trigger('reset');
+                AppUser.set('num_tweets', AppUser.get('num_tweets') + 1);
+            }
+        }
     }
 
     function addFollow(followData) {
@@ -55,8 +66,8 @@ function(   AppUser,
 
     function RealTime() {
 
-        //var socket = io.connect('http://192.168.1.135:80');
-        var socket = io.connect('http://216.80.103.168:80');
+        var socket = io.connect('http://192.168.1.135:80');
+        //var socket = io.connect('http://216.80.103.168:80');
 
         socket.on('tweet', function (tweetData) {
             updateTweets(tweetData);

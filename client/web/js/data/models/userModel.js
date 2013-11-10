@@ -223,7 +223,6 @@ function(   TweetCollection,
                     EventAggregator.trigger('user:make-tweet:complete', true);
                     self.get('tweets').add(tweetModel, { at: 0, silent: true });
                     self.get('tweets').trigger("reset");
-                    self.set('num_tweets', self.get('num_tweets') + 1);
             }).fail(function (jqXhr) {
                 // don't trigger error if abort
                 if (jqXhr.statusText !== "abort") {
