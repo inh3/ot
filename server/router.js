@@ -178,7 +178,7 @@ followRepository.on('follow-repo:response-end:remove-follow', function(queryKey,
 
 // MODULE DEFINITION ---------------------------------------------------------------------------------------------------
 
-module.exports = function(app) {
+module.exports = function(app, io) {
 
     // default path for debug
     app.get("/*", function(req, res, next) {
@@ -358,5 +358,14 @@ module.exports = function(app) {
     // default
     app.get('/', function(req, res){
         res.send(indexHtml);
+    });
+
+    // SOCKET IO -------------------------------------------------------------------------------------------------------
+
+    io.sockets.on('connection', function (socket) {
+        socket.emit('news', { hello: 'world' });
+        socket.on('my other event', function (data) {
+            console.log(data);
+        });
     });
 };

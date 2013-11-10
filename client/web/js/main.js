@@ -16,6 +16,9 @@ require.config({
         // application user
         appUser:            "core/appUser",
 
+        // real-time (socketio)
+        realTime:           "core/realTime",
+
         // event manager
         vent:               "core/vent",
 
@@ -66,8 +69,8 @@ require.config({
         // templates
         templates:          "./../templates",
 
-        // handlebars helpers
-        helpers:            "templates/helpers"
+        // socket.io
+        socketio:           "./../lib/socketio/socket.io.min"
     },
     // support for non-amd libraries
     shim: {
@@ -94,6 +97,9 @@ require.config({
         },
         handlebars: {
             exports:        'Handlebars'
+        },
+        socketio: {
+            exports:        'io'
         }
     }
 });
@@ -102,6 +108,7 @@ require.config({
 require([   "jquery",
             "vent",
             "opentweet",
+            "realTime",
             "marionette",
             "handlebars",
             "cookie"],

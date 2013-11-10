@@ -2,9 +2,13 @@ var express = require('express');
 var app = express();
 
 require('./configuration.js')(app, express);
-require('./router.js')(app);
 
 if (!module.parent){
-    app.listen(80);
+
+    var server = require('http').createServer(app);
+    var io = require('socket.io').listen(server);
+    server.listen(80);
     console.log('Express started on port 80');
 }
+
+require('./router.js')(app, io);
