@@ -33,6 +33,11 @@ textarea {
     word-wrap: break-word;
 }
 
+.error-text {
+    margin-left: 10px;
+    display: inline-block;
+}
+
 /* media queries */
 
 @media (min-width: 992px) {

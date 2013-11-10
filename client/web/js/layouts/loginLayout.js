@@ -23,7 +23,9 @@ function(   LoginModel,
         ui: {
             userNameLogin:      "#login-user-name",
             passwordLogin:      "#login-password",
-            loginButton:        "#login-button"
+            loginButton:        "#login-button",
+
+            errorText:          ".error-text"
         },
 
         events: {
@@ -38,6 +40,9 @@ function(   LoginModel,
 
             // debounce the login buttons
             this.loginButtonClick = _.debounce(this.loginButtonClick, 1000, true);
+
+            // login complete event
+            this.listenTo(EventAggregator, "user:login:complete", this.loginFailed);
         },
 
         onRender: function() {
@@ -56,8 +61,18 @@ function(   LoginModel,
                 }
             }
         },
+
         loginButtonClick: function() {
             AppUser.userLogin(this.loginModel.toJSON());
+        },
+
+        loginFailed: function(loginSuccess) {
+            if(loginSuccess === false) {
+                this.ui.errorText.removeClass('hidden');
+            }
+            else {
+                this.ui.errorText.addClass('hidden');
+            }
         }
     });
 });

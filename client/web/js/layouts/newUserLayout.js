@@ -25,7 +25,9 @@ function(   SignUpModel,
             passwordSignUp:     "#sign-up-password",
             emailSignUp:        "#sign-up-email",
             soundByteSignUp:    "#sign-up-sound-byte",
-            signUpButton:       "#sign-up-button"
+            signUpButton:       "#sign-up-button",
+
+            errorText:          ".error-text"
         },
 
         events: {
@@ -42,6 +44,9 @@ function(   SignUpModel,
 
             // debounce the login buttons
             this.signUpButtonClick = _.debounce(this.signUpButtonClick, 1000, true);
+
+            // add user complete event
+            this.listenTo(EventAggregator, "user:add:complete", this.signUpFailed);
         },
 
         onRender: function() {
@@ -62,8 +67,18 @@ function(   SignUpModel,
                 }
             }
         },
+
         signUpButtonClick: function() {
             AppUser.addUser(this.signUpModel.toJSON());
+        },
+
+        signUpFailed: function(signUpSuccess) {
+            if(signUpSuccess === false) {
+                this.ui.errorText.removeClass('hidden');
+            }
+            else {
+                this.ui.errorText.addClass('hidden');
+            }
         }
     });
 });
